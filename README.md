@@ -116,5 +116,5 @@ See [LICENSE](LICENSE.md) for full details.
 
 ## Copyright
 
-Copyright © 2023 DoiT International
+Copyright © 2024 DoiT International
 
