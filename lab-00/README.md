@@ -1,6 +1,6 @@
-# GKE Observability Workshop LAB-01
+# GKE Observability Workshop LAB-00
 
-## Kubernetes probes
+## Build and provision the environment
 
 [![Context](https://img.shields.io/badge/GKE%20Fundamentals-1-blue.svg)](#)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)

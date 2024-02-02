@@ -12,14 +12,12 @@ In this workshop, we will look at the landscape of GKE Observability with specia
 
 | Lab/Folder                                                                           | Description                                                             |
 | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
-| [01-single-container-pod](./01-single-container-pod)                                 | simple single container pod example for a static web application        |
-| [02-multiple-container-pod](./02-multiple-container-pod)                             | advanced multi-container pod example for our web application            |
-| [03-webapp-deployment](./03-webapp-deployment)                                       | simple deployment abstraction from lab-01 for a static web application  |
-| [04-webapp-deployment-ext-np](./04-webapp-deployment-ext-np)                         | simple nodePort service exposing example for this application           |
-| [05-webapp-deployment-ext-lb](./05-webapp-deployment-ext-lb)                         | simple loadBalancer service exposing example using the same backend-app |
-| [06-webapp-deployment-ext-ingress](./06-webapp-deployment-ext-ingress)               | simple ingress example using gce-based ingress controller               |
-| [07-webapp-deployment-ext-ingress-fanout](./07-webapp-deployment-ext-ingress-fanout) | advanced ingress fan-out example for multiple app-versions              |
-| [08-webapp-k8s-dashboard-deployment](./08-webapp-k8s-dashboard-deployment)           | advanced deployment example using secrets, configmaps and RBAC          |
+| [lab-00](./lab-00/README.md)                                 | Create and provision environment        |
+| [lab-01](./lab-01/README.md)                             | Kubernetes probes            |
+| [lab-02](./lab-02/README.md)                                       | GKE Logging  |
+| [lab-03](./lab-03/README.md)                         | GKE Metrics           |
+| [lab-04](./lab-04/README.md)                         | GKE Distributed Tracing |
+| [lab-05](./lab-05/README.md)               |   GKE Monitoring and alerting             |
 
 ## Core Requirements
 
