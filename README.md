@@ -54,6 +54,9 @@ gcloud init
 alias k='kubectl'
 ```
 
+## Tracking sheet
+Google Docs [spreadsheet](https://docs.google.com/spreadsheets/d/1vnqlCl3JjEGbN0rdnhJkoZOzXEuupckJ7UghqQYeFKc/edit?usp=sharing) to track the completion of tasks.
+
 ## Workshop Cluster Provisioning
 ## TBD
 
