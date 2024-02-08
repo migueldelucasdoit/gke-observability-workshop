@@ -57,36 +57,14 @@ alias k='kubectl'
 ## Tracking sheet
 Google Docs [spreadsheet](https://docs.google.com/spreadsheets/d/1vnqlCl3JjEGbN0rdnhJkoZOzXEuupckJ7UghqQYeFKc/edit?usp=sharing) to track the completion of tasks.
 
-## Workshop Cluster Provisioning
-## TBD
+## Prerequisites
+* [Terraform 0.13+](https://developer.hashicorp.com/terraform/downloads) Tool that manages IaC 
+* [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) Google Cloud Command Line Interface.
+* [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/) The Kubernetes command-line tool, kubectl, allows you to run commands against Kubernetes clusters.
+* [Helm 3.0+](https://helm.sh/docs/) Helm is the package manager for Kubernetes.
+* [Skaffold](https://skaffold.dev/) Skaffold is a command line tool that facilitates continuous development for container based & Kubernetes applications. It's included as an optional component in Google Cloud SDK and you can install it.
 
-The following `gcloud` command call initializes the workshop-cluster as a regional Autopilot cluster .
-
-- Please make sure that you are also in the project prepared for this workshop or that your used dev/sandbox project has also been selected via `cloud init`!
-
-- Init your GKE-Cluster with a unique identifier suffix (_and remind your cluster-id_)
-
-  ```bash
-  printf "%s\n" "[INIT] workshop cluster"
-  UNIQUE_CLUSTER_KEY=$RANDOM; GCP_PROJECT=$(gcloud config get core/project);
-  gcloud container clusters create-auto workshop-${UNIQUE_CLUSTER_KEY} \
-  --region europe-west1 \
-  --release-channel regular \
-  --logging=SYSTEM,WORKLOAD \
-  --monitoring=SYSTEM \
-  --network "default" && \
-  printf "%s\n" "[INIT] test access new cluster using k8s API via kubectl" \
-  kubectl get all --all-namespaces && kubectl cluster-info && \
-  printf "\n%s\n\n" "[INIT] workshop cluster finally initialized and available by ID -> [ workshop-${UNIQUE_CLUSTER_KEY} ] <-"
-  ```
-
-## Workshop Cluster cleanup
-
-In order to delete the cluster and all resources within it, you can run the following command (requires confirmation):
-
-```bash
-gcloud container clusters delete workshop-${UNIQUE_CLUSTER_KEY} --region europe-west1
-```
+All these tools are available in Google Cloud CloudShell which is accesible from the Google Cloud console.
 
 ## Links
 

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: blueprints-api
+  namespace: blueprints
+  annotations:
+    iam.gke.io/gcp-service-account: blueprints-api-sa@migueld-playground.iam.gserviceaccount.com
+automountServiceAccountToken: true

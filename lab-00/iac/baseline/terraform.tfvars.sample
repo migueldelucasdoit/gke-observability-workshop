@@ -1,0 +1,34 @@
+#############################################################################
+# TFVars file                                                               #
+#############################################################################
+project_id    = "migueld-playground"
+region        = "europe-west6"
+zone          = "europe-west6-a"
+stack_name    = "baseline-otel-blueprints"
+
+#############################################################################
+# VPC and subnets                                                           #
+#############################################################################
+vpc_name = "vpc-otel-blueprints"
+vpc_subnets = [
+  {
+    subnet_name           = "subnet-gke-europe-west6"
+    subnet_ip             = "10.16.0.0/16"
+    subnet_region         = "europe-west6"
+    subnet_private_access = "true"
+  },
+]
+
+vpc_subnets_secondary_ranges = {
+  "subnet-gke-europe-west6" = [
+    {
+      range_name    = "subnet-gke-europe-west6-services"
+      ip_cidr_range = "10.17.0.0/16"
+    },
+    {
+      range_name    = "subnet-gke-europe-west6-pods"
+      ip_cidr_range = "10.0.0.0/12"
+    },
+  ],
+}
+

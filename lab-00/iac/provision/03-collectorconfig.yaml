@@ -1,0 +1,84 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel
+  namespace: blueprints
+spec:
+  mode: deployment
+  serviceAccount: otel-collector-sa
+  config: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+          http:
+      prometheus:
+        config:
+          scrape_configs:
+          - job_name: 'blueprints'
+            kubernetes_sd_configs:
+            - role: pod
+            relabel_configs:
+            - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
+              action: keep
+              regex: (.+)
+            - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+              action: replace
+              target_label: __metrics_path__
+              regex: (.+)
+            - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+              action: replace
+              regex: (.+):(?:\d+);(\d+)
+              replacement: $1:$2
+              target_label: __address__
+            - action: labelmap
+              regex: __meta_kubernetes_pod_label_(.+)
+    processors:
+      resourcedetection:
+        detectors: [env, gcp]
+        timeout: 10s
+      filter/healthcheck: # Drop traces from health check and metrics
+        error_mode: ignore
+        traces:
+          span:
+            - attributes["http.target"] == "/healthz"
+            - attributes["http.target"] == "/metrics"
+      batch:
+        # batch metrics before sending to reduce API usage
+        send_batch_max_size: 200
+        send_batch_size: 200
+        timeout: 5s
+      memory_limiter:
+        # drop metrics if memory usage gets too high
+        check_interval: 1s
+        limit_percentage: 65
+        spike_limit_percentage: 20
+    exporters:
+      googlecloud:
+      googlemanagedprometheus:
+      logging:
+        loglevel: debug
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [resourcedetection, memory_limiter, filter/healthcheck, batch]
+          exporters: [logging, googlecloud]
+        metrics:
+          receivers: [prometheus]
+          processors: [resourcedetection, memory_limiter, batch]
+          exporters: [logging, googlemanagedprometheus]

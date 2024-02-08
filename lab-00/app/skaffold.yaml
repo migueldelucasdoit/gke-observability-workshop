@@ -1,0 +1,24 @@
+apiVersion: skaffold/v4beta6
+kind: Config
+metadata:
+  name: keda-blueprints
+build:
+  artifacts:
+    - image: blueprints-api
+      context: api
+      docker:
+        dockerfile: Dockerfile
+    - image: blueprints-worker
+      context: worker
+      docker:
+        dockerfile: Dockerfile
+manifests:
+  rawYaml:
+    - api/k8s/*
+    - worker/k8s/*
+profiles:
+  - name: sandbox
+    requiresAllActivations: false
+    build:
+      googleCloudBuild:
+        projectId: migueld-playground
