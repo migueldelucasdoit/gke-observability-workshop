@@ -19,40 +19,8 @@ In this workshop, we will look at the landscape of GKE Observability with specia
 | [lab-04](./lab-04/README.md)                         | GKE Distributed Tracing |
 | [lab-05](./lab-05/README.md)               |   GKE Monitoring and alerting             |
 
-## Core Requirements
-
-For the use of the local development environment for all GKE/K8s relevant CLI/API calls a certain tool set is required and Linux or macOS as operating system is recommended. If it is not possible to install our stack due to limitations in terms of feasibility/availability in the preparation, you can alternatively use the browser-internal cloud shell of your GCP console.
-
-- `gcloud sdk` [installation](https://cloud.google.com/sdk/docs/install) tutorial
-- `kubectl` [installation](https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl#install_kubectl) tutorial
-- `gke-gcloud-auth-plugin` [installation](https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl#install_plugin)
-- Skaffold [installation](https://cloud.google.com/sdk/docs/install) tutorial
-- Helm 3.0+ [installation](https://helm.sh/docs/) Helm is the package manager for Kubernetes.
-- Skaffold [installation](https://skaffold.dev/) Skaffold is a command line tool that facilitates continuous development for container based & Kubernetes applications. It's included as an optional component in Google Cloud SDK and you can install it.
-
-```
-$ gcloud components install skaffold
-```
-
 ## Workshop presentation slides.
 GKE Observability Workshop [presentation](https://docs.google.com/presentation/d/1ssd_Z8ykpXzf_50pVToBueMJ_JDzJi9H1bmKgDuGPfk/edit?usp=sharing) that can be used as a guide for exercises.
-
-## Workshop Cluster Preparation 
-
-The preparation of the GKE cluster is one of the first steps of our workshop and is the basis for all our further activity using the local development environment of all participants. We will pave the way to our first K8s application deployment step by step in the following section, learning some of the basics of using the gcloud SDK CLI and kubectl.
-
-## GCloud SDK Preparation
-
-```bash
-gcloud components update
-gcloud init
-```
-
-## Optional Terminal Preparation
-
-```bash
-alias k='kubectl'
-```
 
 ## Tracking sheet
 Google Docs [spreadsheet](https://docs.google.com/spreadsheets/d/1vnqlCl3JjEGbN0rdnhJkoZOzXEuupckJ7UghqQYeFKc/edit?usp=sharing) to track the completion of tasks.
@@ -64,7 +32,7 @@ Google Docs [spreadsheet](https://docs.google.com/spreadsheets/d/1vnqlCl3JjEGbN0
 * [Helm 3.0+](https://helm.sh/docs/) Helm is the package manager for Kubernetes.
 * [Skaffold](https://skaffold.dev/) Skaffold is a command line tool that facilitates continuous development for container based & Kubernetes applications. It's included as an optional component in Google Cloud SDK and you can install it.
 
-All these tools are available in Google Cloud CloudShell which is accesible from the Google Cloud console.
+All these tools are available in Google Cloud Cloud Shell which can be [launched](https://cloud.google.com/shell/docs/launching-cloud-shell) from the Google Cloud console.
 
 ## Links
 
