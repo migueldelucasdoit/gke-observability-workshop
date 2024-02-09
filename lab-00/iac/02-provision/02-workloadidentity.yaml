@@ -4,7 +4,7 @@ metadata:
   name: otel-collector-sa
   namespace: blueprints
   annotations:
-      cnrm.cloud.google.com/project-id: migueld-playground
+      cnrm.cloud.google.com/project-id: PROJECT_ID
 spec:
   displayName: Service account for Open Telemetry connector.
 ---
@@ -14,12 +14,12 @@ metadata:
   name: otel-collector-policy-member-binding
   namespace: blueprints
 spec:
-  member: serviceAccount:otel-collector-sa@migueld-playground.iam.gserviceaccount.com
+  member: serviceAccount:otel-collector-sa@PROJECT_ID.iam.gserviceaccount.com
   role: roles/cloudtrace.agent
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
-    external: projects/migueld-playground
+    external: projects/PROJECT_ID
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
@@ -27,12 +27,12 @@ metadata:
   name: otel-collector-policy-member-binding-2
   namespace: blueprints
 spec:
-  member: serviceAccount:otel-collector-sa@migueld-playground.iam.gserviceaccount.com
+  member: serviceAccount:otel-collector-sa@PROJECT_ID.iam.gserviceaccount.com
   role: roles/monitoring.metricWriter
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
-    external: projects/migueld-playground
+    external: projects/PROJECT_ID
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicy
@@ -47,4 +47,4 @@ spec:
   bindings:
     - role: roles/iam.workloadIdentityUser
       members:
-        - serviceAccount:migueld-playground.svc.id.goog[blueprints/otel-collector-sa]
+        - serviceAccount:PROJECT_ID.svc.id.goog[blueprints/otel-collector-sa]

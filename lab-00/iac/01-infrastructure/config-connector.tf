@@ -6,7 +6,6 @@
 #############################################################################
 resource "google_service_account" "config_connector_sa" {
   count        = var.gke_cluster_enable_config_connector ? 1 : 0
-  project      = var.project_id
   account_id   = "config-connector-sa"
   display_name = "Config Connector service account"
 }
