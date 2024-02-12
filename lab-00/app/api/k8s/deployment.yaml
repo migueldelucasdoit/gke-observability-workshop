@@ -35,7 +35,7 @@ spec:
             containerPort: 3000
         env:
           - name: PROJECT_ID
-            value: migueld-playground
+            value: PROJECT_ID_VALUE
           - name: TOPIC_ID
             value: blueprints-topic
           - name: SUBSCRIPTION_ID

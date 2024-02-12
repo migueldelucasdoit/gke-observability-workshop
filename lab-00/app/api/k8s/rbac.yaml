@@ -4,5 +4,5 @@ metadata:
   name: blueprints-api
   namespace: blueprints
   annotations:
-    iam.gke.io/gcp-service-account: blueprints-api-sa@migueld-playground.iam.gserviceaccount.com
+    iam.gke.io/gcp-service-account: blueprints-api-sa@PROJECT_ID_VALUE.iam.gserviceaccount.com
 automountServiceAccountToken: true

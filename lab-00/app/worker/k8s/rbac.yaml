@@ -4,5 +4,5 @@ metadata:
   name: blueprints-worker
   namespace: blueprints
   annotations:
-    iam.gke.io/gcp-service-account: blueprints-worker-sa@migueld-playground.iam.gserviceaccount.com
+    iam.gke.io/gcp-service-account: blueprints-worker-sa@PROJECT_ID_VALUE.iam.gserviceaccount.com
 automountServiceAccountToken: true

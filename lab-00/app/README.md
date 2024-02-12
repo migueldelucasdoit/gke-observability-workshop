@@ -34,7 +34,7 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 * Point the *SKAFFOLD_DEFAULT_REPO* environment variable to the external registry.
 ```
-$ export SKAFFOLD_DEFAULT_REPO=europe-west6-docker.pkg.dev/migueld-playground/blueprints-repository
+$ export SKAFFOLD_DEFAULT_REPO=europe-west6-docker.pkg.dev/PROJECT_ID_VALUE/blueprints-repository
 ```
 
 * Set the *SKAFFOLD_PROFILE* environment variable to use the `sandbox` profile. 
