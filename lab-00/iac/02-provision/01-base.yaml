@@ -15,7 +15,7 @@ metadata:
     app.kubernetes.io/name: otel-collector
     app.kubernetes.io/part-of: opentelemetry
   annotations:
-    iam.gke.io/gcp-service-account: otel-collector-sa@migueld-playground.iam.gserviceaccount.com
+    iam.gke.io/gcp-service-account: otel-collector-sa@PROJECT_ID.iam.gserviceaccount.com
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole

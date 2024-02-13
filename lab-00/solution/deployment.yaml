@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: blueprints-worker
+  name: blueprints-api
   namespace: blueprints
   labels:
-    app: blueprints-worker
+    app: blueprints-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: blueprints-worker
+      app: blueprints-api
   template:
     metadata:
       labels:
-        app: blueprints-worker
-        app.kubernetes.io/name: blueprints-worker
+        app: blueprints-api
+        app.kubernetes.io/name: blueprints-api
         app.kubernetes.io/part-of: blueprints
     spec:
       initContainers:
@@ -26,9 +26,11 @@ spec:
             - |
               curl -sS -H 'Metadata-Flavor: Google' 'http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token' --retry 30 --retry-connrefused --retry-max-time 60 --connect-timeout 3 --fail --retry-all-errors > /dev/null && exit 0 || echo 'Retry limit exceeded. Failed to wait for metadata server to be available. Check if the gke-metadata-server Pod in the kube-system namespace is healthy.' >&2; exit 1
       containers:
-      - name: worker
-        image: blueprints-worker
+      - name: api
+        image: blueprints-api
         ports:
+          - name: services
+            containerPort: 8080
           - name: system
             containerPort: 3000
         env:
@@ -45,7 +47,19 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "200m"
-      serviceAccountName: blueprints-worker
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      serviceAccountName: blueprints-api
       nodeSelector:
         layer: blueprints
       tolerations:
