@@ -30,6 +30,18 @@ On the **Logs Explorer**, using the "Refine scope" button and choosing the `blue
 
 On the **Log Analytics** page, you can query application's logs.
 
+Here is a query example:
+*(replace `XXX` with your project ID)*
+```sql
+SELECT
+    timestamp, severity, json_payload, JSON_VALUE(json_payload.status), resource
+FROM
+    `XXX.global.blueprints-app-logs._AllLogs`
+WHERE
+    JSON_VALUE(resource.labels.container_name) = "api" AND JSON_VALUE(json_payload.status) IS NOT NULL
+    LIMIT 10000
+```
+
 ## Links
 
 - https://cloud.google.com/logging/docs/buckets
