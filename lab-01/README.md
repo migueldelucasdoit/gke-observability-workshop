@@ -12,7 +12,7 @@ The `api` application is currently deployed without readiness and liveness probe
 
 Edit the `blueprints-api` deployment in the `blueprints` namespace to add liveness and readiness probes. You can use the HTTP health checks `/healthz` and `/readyz` for liveness and readiness probes respectively.
 
-*Tips: You can either use the `kubectl -n blueprints edit deploy blueprints-api` command or edit the `deployment.yaml` file, then use the `kubectl apply -f deployment.yaml` to apply changes.*
+*Tips: You can use the `kubectl -n blueprints edit deploy blueprints-api` command.*
 
 After editing the deployment you should see a new pod starting and becoming ready after few seconds:
 ```log
