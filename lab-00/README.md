@@ -70,7 +70,7 @@ terraform apply --var-file terraform.tfvars.sample
 gcloud container clusters get-credentials gke-otel-blueprints --region europe-west6`
 ```
 
-Ensure that you can access the Kubernetes API Server. You should see something like:
+* Ensure that you can access the Kubernetes API Server. You should see something like:
 ```shell
 $ kubectl version
 Client Version: v1.29.0
