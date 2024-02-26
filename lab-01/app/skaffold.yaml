@@ -3,6 +3,7 @@ kind: Config
 metadata:
   name: blueprints
 build:
+  googleCloudBuild: {}
   artifacts:
     - image: blueprints-api
       context: api

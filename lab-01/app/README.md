@@ -1,6 +1,6 @@
-# Open Telemetry Blueprints App
+# GKE Observability Blueprints App
 
-Demo Application for demonstrating for illustrating monitoring and tracing with Open Telemetry. It does have the following components:
+Demo Application for demonstrating for illustrating monitoring, logging and tracing with GKE. It does have the following components:
 
 * [REST API](./api). Presents an external REST-based API for telemetry. Validates the input and publish a message on a Pub/Sub topic.
 * [Worker processor](./worker) pulls messages from the Pub/Sub topic as they're available. It scales based on the number of acknowledged messages.
@@ -18,18 +18,12 @@ $ gcloud components install skaffold
 ```
 
 
-
 ## Deploy application.
 To build and push your application to the Artifact Registry repository and deploy it to your GKE cluster. Make sure that you have valid [GCP credentials](https://cloud.google.com/sdk/docs/authorizing).
 
 * Obtain credentials for GKE cluster.
 ```
 gcloud container clusters get-credentials gke-otel-blueprints --region europe-west6
-```
-
-* Set [USE_GKE_GCLOUD_AUTH_PLUGIN](https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke) environment variable.
-```
-export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 ```
 
 * Point the *SKAFFOLD_DEFAULT_REPO* environment variable to the external registry.

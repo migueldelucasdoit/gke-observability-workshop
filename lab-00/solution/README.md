@@ -1,4 +1,4 @@
-# Terraform stack for Open Telemetry Blueprints
+# Terraform stack for GKE Observability Workshop
 
 ## Description
 Backend stack with application infrastructure.
@@ -7,11 +7,6 @@ Backend stack with application infrastructure.
 * Obtain credentials for GKE cluster.
 ```
 gcloud container clusters get-credentials gke-otel-blueprints --region europe-west6
-```
-
-* Set [USE_GKE_GCLOUD_AUTH_PLUGIN](https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke) environment variable.
-```
-export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 ```
 
 * Use kubectl as usual.

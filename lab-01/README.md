@@ -2,10 +2,11 @@
 
 ## Kubernetes probes
 
-[![Context](https://img.shields.io/badge/GKE%20Fundamentals-1-blue.svg)](#)
+[![Context](https://img.shields.io/badge/GKE%20Observability%20Workshop-01-blue.svg)](#)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## Introduction
+You need to deploy the [GKE Observability Blueprints application](./app/README.md) that we will use during our workshop.
 The `api` application is currently deployed without readiness and liveness probes. Since this application will receive traffic (HTTP requests), it's important to set up a liveness and a readiness probe.
 
 ## Add liveness and readiness probes

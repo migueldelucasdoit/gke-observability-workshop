@@ -14,23 +14,55 @@
 All these tools are available in Google Cloud Cloud Shell which can be [launched](https://cloud.google.com/shell/docs/launching-cloud-shell) from the Google Cloud console.
 
 ## Introduction
-On this lab, will deploy the required base infrastructure composed of:
+On this lab, we will deploy the required base infrastructure composed of:
 - A VPC with necessary network configurations
 - A subnet with secondary ranges for GKE pods and services
 - A GKE cluster with 2 node pools
 - An Artifact Registry repository
 - A Pub-Sub topic with its associated subscription
-- CertManager and OpenTelemetry operator using HELM charts
+- CertManager and OpenTelemetry operator using Helm charts
 
-## Deployment
+## Preparation
 
-Once you've launched your Cloud Shell, clone this repository using the following command: `git clone https://github.com/migueldelucasdoit/gke-observability-workshop.git` (TODO: move the repository under the DoiT organization)
+* Assignment of the lab users and playgrounds. Make sure you get access to the GCP project that you will use during the workshop.
+* Login to the [Google Cloud console](https://console.cloud.google.com) with the required credentials.
+* [Activate Cloud Shell](https://cloud.google.com/shell/docs/launching-cloud-shell) from the Google Cloud console.
+* Once you've launched your [Cloud Shell Terminal](https://cloud.google.com/shell/docs/use-cloud-shell-terminal), check that all the required components are installed and up-to-date.
+```
+gcloud version
+helm version
+kubectl version --short --client-only
+skaffold version
+terraform version
+```
 
-First of all, you need to initialize the terraform environment using the following command (please ensure that you're on the `01-infrastructure` folder): `terraform init`
+* Clone this repository using the following command: 
+```
+git clone https://github.com/migueldelucasdoit/gke-observability-workshop.git 
+```
 
-Then, edit the `terraform.tfvars.sample` to specify your `project_id`.
+## Create the required infrastructure
 
-Apply the stack using the following command: `terraform apply --var-file terraform.tfvars.sample`. *(If you're prompted with a dialog box, click on "Authorize".)* Enter `yes`.
+* Position yourself in the lab folder.
+```
+cd ~/gke-observability-workshop/lab-00/iac
+```
+
+* Initialize the Terraform environment using the following command: 
+```
+terraform init
+```
+
+* Then, edit the [terraform.tfvars.sample](./iac/terraform.tfvars.sample) using [Cloud Editor](https://cloud.google.com/shell/docs/launching-cloud-shell-editor) and set the `project_id` to match the GCP project ID you're using. You can check it from Cloud Shell using the following command:
+```
+gcloud config get-value project
+```
+
+* Apply the stack using the following command. *(If you're prompted with a dialog box, click on "Authorize".)* Enter `yes`.
+
+```
+terraform apply --var-file terraform.tfvars.sample
+```
 
 ## Cluster Application Check / Playground
 Once the stack is deployed, retrieve the GKE cluster credentials using this command: `gcloud container clusters get-credentials gke-otel-blueprints --region europe-west6`
