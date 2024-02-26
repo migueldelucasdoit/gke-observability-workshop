@@ -8,7 +8,6 @@ Backend stack with application infrastructure.
 ```
 gcloud container clusters get-credentials gke-otel-blueprints --region europe-west6
 ```
-
 * Use kubectl as usual.
 
 ## Configure Helm
@@ -30,7 +29,7 @@ helm repo update
 * [Helm 3.9+](https://helm.sh/docs/) Helm is the package manager for Kubernetes.
 
 ## Installation
-Configure your Terraform *TFVARS* file accordingly. Check the included [sample](./terraform.tfvars.sample)
+Configure your Terraform *TFVARS* file accordingly. Check the included [sample](../iac/terraform.tfvars.sample)
 
 ```
 terraform init
@@ -39,7 +38,7 @@ terraform apply backend.plan
 ```
 
 ## Removal
-Configure your Terraform *TFVARS* file accordingly. Check the included [sample](./terraform.tfvars.sample)
+Configure your Terraform *TFVARS* file accordingly. Check the included [sample](../iac/terraform.tfvars.sample)
 
 ```
 terraform apply -destroy -auto-approve
