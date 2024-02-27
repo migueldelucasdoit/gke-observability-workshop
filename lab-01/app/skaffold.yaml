@@ -3,7 +3,6 @@ kind: Config
 metadata:
   name: blueprints
 build:
-  googleCloudBuild: {}
   artifacts:
     - image: blueprints-api
       context: api
@@ -13,6 +12,8 @@ build:
       context: worker
       docker:
         dockerfile: Dockerfile
+deploy:
+  kubectl: {}
 manifests:
   rawYaml:
     - api/k8s/*

@@ -1,8 +1,8 @@
 # GKE Observability Workshop
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![GKE/K8s Version](https://img.shields.io/badge/k8s%20version-1.26.5-blue.svg)](#)
-[![GCloud SDK Version](https://img.shields.io/badge/gcloud%20version-440.0.0-blue.svg)](#)
+[![GKE/K8s Version](https://img.shields.io/badge/k8s%20version-1.29.0-blue.svg)](#)
+[![GCloud SDK Version](https://img.shields.io/badge/gcloud%20version-462.0.1-blue.svg)](#)
 
 ## Introduction
 
@@ -12,12 +12,13 @@ In this workshop, we will look at the landscape of GKE Observability with specia
 
 | Lab/Folder                                                                           | Description                                                             |
 | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
-| [lab-00](./lab-00/README.md)                                 | Create and provision environment        |
-| [lab-01](./lab-01/README.md)                             | Kubernetes probes            |
-| [lab-02](./lab-02/README.md)                                       | GKE Logging  |
-| [lab-03](./lab-03/README.md)                         | GKE Metrics           |
-| [lab-04](./lab-04/README.md)                         | GKE Distributed Tracing |
-| [lab-05](./lab-05/README.md)               |   GKE Monitoring and alerting             |
+| [lab-00](./lab-00/README.md) | Create and provision environment |
+| [lab-01](./lab-01/README.md) | Deploy the blueprints application |
+| [lab-02](./lab-02/README.md) | Kubernetes probes |
+| [lab-03](./lab-03/README.md) | GKE Logging |
+| [lab-04](./lab-04/README.md) | GKE Metrics |
+| [lab-05](./lab-05/README.md) | GKE Distributed Tracing |
+| [lab-06](./lab-06/README.md) | GKE Monitoring and alerting |
 
 ## Workshop presentation slides.
 GKE Observability Workshop [presentation](https://docs.google.com/presentation/d/1ssd_Z8ykpXzf_50pVToBueMJ_JDzJi9H1bmKgDuGPfk/edit?usp=sharing) that can be used as a guide for exercises.
