@@ -1,8 +1,8 @@
-# GKE Observability Workshop LAB-01
+# GKE Observability Workshop LAB-02
 
-## Deploy blueprints application
+## Kubernetes Liveness and Readiness probes
 
-[![Context](https://img.shields.io/badge/GKE%20Observability%20Workshop-01-blue.svg)](#)
+[![Context](https://img.shields.io/badge/GKE%20Observability%20Workshop-02-blue.svg)](#)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## Prerequisites
@@ -17,7 +17,7 @@
 All these tools are available in Google Cloud Cloud Shell which can be [launched](https://cloud.google.com/shell/docs/launching-cloud-shell) from the Google Cloud console.
 
 ## Introduction
-You need to deploy the [*GKE Observability Blueprints application*](./app/) that we will use during our workshop. This demo Application has been built for demonstrating for illustrating monitoring, logging and tracing with GKE. It does have the following components:
+Once you have deployed the [*GKE Observability Blueprints application*](./app/) we need to add liveness and readiness probes to the containers of our application. It does have the following components:
 
 * [REST API](./app/api). Presents an external REST-based API for telemetry. Validates the input and publish a message on a Pub/Sub topic.
 * [Worker processor](./app/worker) pulls messages from the Pub/Sub topic as they're available. It scales based on the number of acknowledged messages.
@@ -47,17 +47,11 @@ terraform version
 k6 version
 ```
 
-## Deploy the application
+## Add liveness and readiness probes
 
-* Set the [*CLOUDSDK_CORE_PROJECT*](https://cloud.google.com/compute/docs/gcloud-compute#default_project) environment variable to your GCP project ID.
-```
-export CLOUDSDK_CORE_PROJECT=$(gcloud config get-value project)
-```
+* Check the code of the [API component](../lab-01/app/api/handlers.go). Find the liveness and readiness endpoints and annotate them.
 
-* Set the [default compute region](https://cloud.google.com/compute/docs/gcloud-compute#set-default-region-zone-environment-variables) environment variable to `europe-west6`.
-```
-export CLOUDSDK_COMPUTE_REGION=europe-west6
-```
+* Add the liveness and readiness probes to the main container of the template Pod spec in the [API deployment](../lab-01/app/api/k8s/deployment.yaml). You can use [Cloud Editor](https://cloud.google.com/shell/docs/launching-cloud-shell-editor) for that purpose.
 
 * Set the [default compute zone](https://cloud.google.com/compute/docs/gcloud-compute#set-default-region-zone-environment-variables) environment variable to `europe-west6-a`.
 ```
@@ -85,24 +79,13 @@ gcloud container clusters get-credentials gke-otel-blueprints --region $CLOUDSDK
 cd ~/gke-observability-workshop/lab-01/app
 ```
 
-* Replace `PROJECT_ID_VALUE` in the application deployment specs using the following command.
-```
-find . -type f -exec sed -i s/PROJECT_ID_VALUE/$CLOUDSDK_CORE_PROJECT/ {} +
-```
-
 * Point the [*SKAFFOLD_DEFAULT_REPO*](https://skaffold.dev/docs/environment/image-registries/#:~:text=default%2Drepo%20%3Cmyrepo%3E-,SKAFFOLD_DEFAULT_REPO,-environment%20variable) environment variable to the Artifact Registry repository.
 ```
 export SKAFFOLD_DEFAULT_REPO=$CLOUDSDK_COMPUTE_REGION-docker.pkg.dev/$CLOUDSDK_CORE_PROJECT/$REPO_NAME
 ```
 
-* If you just want to [build and push](https://skaffold.dev/docs/builders/builder-types/docker/) the containers to the Artifact Registry repository use.
+* [Deploy the application](https://skaffold.dev/docs/deployers/kubectl/) to the GKE cluster.
 ```
-skaffold build
-```
-
-* If you want to build and push the containers to the Artifact Registry repository and also [deploy the application](https://skaffold.dev/docs/deployers/kubectl/) to the GKE cluster use.
-```
-kubectl create ns blueprints
 skaffold run
 ```
 
@@ -116,22 +99,16 @@ blueprints-api-5df98f7c4d-w2frz      1/1     Running   0          103s
 blueprints-worker-5b44df6bff-qww8c   1/1     Running   0          97s
 ```
 
-* After some time check that the Gateway has been deployed and annotate the IP address of the external Load Balancer. It might take some time to provision the external Load Balancer.
-```
-export GATEWAY_IP=$(kubectl get gateway blueprints-api -n blueprints -o jsonpath='{.status.addresses[].value}')
-```
-
-* Change the `gatewayIP` address of the [K6 test script](./app/loadtest/test.js) to the IP address of the external Load Balancer that has been created.
-```
-find . -type f -exec sed -i s/GATEWAY_IP_VALUE/$GATEWAY_IP/ {} +
-```
 * Run the [K6 test script](./app/loadtest/test.js) and [check that there are no errors](https://k6.io/docs/get-started/results-output/).
 ```
 k6 run loadtest/test.js
 ```
+
+* You can check a possible solution [here](./app/api/k8s/deployment.yaml).
 
 ## Links
 - [Skaffold documentation](https://skaffold.dev/docs)
 - [Artifact Registry documentation](https://cloud.google.com/artifact-registry/docs/docker/store-docker-container-images)
 - [Deploying Gateways in GKE](https://cloud.google.com/kubernetes-engine/docs/how-to/deploying-gateways)
 - [Running K6](https://k6.io/docs/get-started/running-k6/)
+- [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
