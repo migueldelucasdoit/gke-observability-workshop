@@ -86,6 +86,8 @@ terraform import google_logging_project_bucket_config.app-logs-bucket projects/P
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_gke"></a> [gke](#module\_gke) | terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster | ~> 28.0 |
+| <a name="module_subnets"></a> [subnets](#module\_subnets) | terraform-google-modules/network/google//modules/subnets-beta | ~> 7.3 |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-google-modules/network/google//modules/vpc | ~> 7.3 |
 
 ## Resources
 
@@ -93,28 +95,21 @@ terraform import google_logging_project_bucket_config.app-logs-bucket projects/P
 |------|------|
 | [google-beta_google_artifact_registry_repository.blueprints_repo](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/google_artifact_registry_repository) | resource |
 | [google_compute_firewall.iap_tcp_forwarding](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
-| [google_compute_firewall.keda_api_server](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
+| [google_compute_firewall.lb_health_check](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
 | [google_compute_global_address.gateway_external_address](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_global_address) | resource |
 | [google_compute_instance.iap_proxy](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance) | resource |
 | [google_compute_router.vpc_router](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_router) | resource |
 | [google_compute_router_nat.vpc_router_nat](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_router_nat) | resource |
 | [google_compute_subnetwork.subnet_iap](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_subnetwork) | resource |
-| [google_logging_project_bucket_config.app-logs-bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/logging_project_bucket_config) | resource |
-| [google_logging_project_sink.app-logs-sink](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/logging_project_sink) | resource |
 | [google_project_iam_member.config_connector_sa](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
-| [google_project_iam_member.keda_operator_sa](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
 | [google_pubsub_subscription.blueprints_subscription](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/pubsub_subscription) | resource |
 | [google_pubsub_topic.blueprints_topic](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/pubsub_topic) | resource |
 | [google_service_account.config_connector_sa](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
-| [google_service_account.keda_operator_sa](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
 | [google_service_account_iam_member.config_connector_sa](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account_iam_member) | resource |
-| [google_service_account_iam_member.keda_operator_sa](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account_iam_member) | resource |
 | [helm_release.cert_manager](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.keda_operator](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.otel_operator](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [kubectl_manifest.config_connector_cluster_config](https://registry.terraform.io/providers/gavinbunney/kubectl/latest/docs/resources/manifest) | resource |
 | [google_client_config.default](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/client_config) | data source |
-| [google_compute_network.vpc](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_network) | data source |
 | [google_compute_zones.available](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_zones) | data source |
 
 ## Inputs
@@ -151,11 +146,6 @@ terraform import google_logging_project_bucket_config.app-logs-bucket projects/P
 | <a name="input_gke_enable_identity_service"></a> [gke\_enable\_identity\_service](#input\_gke\_enable\_identity\_service) | Enable the Identity Service component, which allows customers to use external identity providers with the K8S API. | `bool` | `false` | no |
 | <a name="input_gke_enable_managed_prometheus"></a> [gke\_enable\_managed\_prometheus](#input\_gke\_enable\_managed\_prometheus) | Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled. | `bool` | `false` | no |
 | <a name="input_iap_proxy_subnet_cidr_range"></a> [iap\_proxy\_subnet\_cidr\_range](#input\_iap\_proxy\_subnet\_cidr\_range) | The range of internal addresses that are owned by IAP proxysubnetwork. | `string` | `null` | no |
-| <a name="input_keda_operator_iam_roles"></a> [keda\_operator\_iam\_roles](#input\_keda\_operator\_iam\_roles) | KEDA operator IAM roles added to the operator service account | `set(string)` | `[]` | no |
-| <a name="input_keda_operator_name"></a> [keda\_operator\_name](#input\_keda\_operator\_name) | KEDA operator name. | `string` | `"keda-operator"` | no |
-| <a name="input_keda_operator_namespace"></a> [keda\_operator\_namespace](#input\_keda\_operator\_namespace) | KEDA operator namespace. | `string` | `"keda"` | no |
-| <a name="input_keda_operator_settings"></a> [keda\_operator\_settings](#input\_keda\_operator\_settings) | KEDA operator settings | `map(string)` | `{}` | no |
-| <a name="input_keda_operator_version"></a> [keda\_operator\_version](#input\_keda\_operator\_version) | KEDA operator version. | `string` | `"2.11.2"` | no |
 | <a name="input_otel_operator_name"></a> [otel\_operator\_name](#input\_otel\_operator\_name) | Open Telemetry operator name. | `string` | `"opentelemetry-operator"` | no |
 | <a name="input_otel_operator_namespace"></a> [otel\_operator\_namespace](#input\_otel\_operator\_namespace) | Open Telemetry operator namespace. | `string` | `"opentelemetry-operator-system"` | no |
 | <a name="input_otel_operator_settings"></a> [otel\_operator\_settings](#input\_otel\_operator\_settings) | Open Telemetry operator settings | `map(string)` | `{}` | no |
@@ -163,7 +153,12 @@ terraform import google_logging_project_bucket_config.app-logs-bucket projects/P
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | GCP project ID | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | GCP compute region ID | `string` | n/a | yes |
 | <a name="input_stack_name"></a> [stack\_name](#input\_stack\_name) | Name of the stack | `string` | n/a | yes |
-| <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | GCP VPC name | `string` | n/a | yes |
+| <a name="input_vpc_auto_create_subnetworks"></a> [vpc\_auto\_create\_subnetworks](#input\_vpc\_auto\_create\_subnetworks) | When set to true, the network is created in 'auto subnet mode' and it will create a subnet for each region automatically across the 10.128.0.0/9 address range.<br>When set to false, the network is created in 'custom subnet mode' so the user can explicitly connect subnetwork resources. | `bool` | `false` | no |
+| <a name="input_vpc_delete_default_igw_routes"></a> [vpc\_delete\_default\_igw\_routes](#input\_vpc\_delete\_default\_igw\_routes) | If set, ensure that all routes within the network specified whose names begin with 'default-route' and with a next hop of 'default-internet-gateway' are deleted. | `bool` | `false` | no |
+| <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | VPC name | `string` | `"test-vpc"` | no |
+| <a name="input_vpc_routing_mode"></a> [vpc\_routing\_mode](#input\_vpc\_routing\_mode) | VPC routing mode | `string` | `"GLOBAL"` | no |
+| <a name="input_vpc_subnets"></a> [vpc\_subnets](#input\_vpc\_subnets) | The list of subnets being created. | `list(map(string))` | n/a | yes |
+| <a name="input_vpc_subnets_secondary_ranges"></a> [vpc\_subnets\_secondary\_ranges](#input\_vpc\_subnets\_secondary\_ranges) | Secondary ranges that will be used in some of the subnets. | `map(list(object({ range_name = string, ip_cidr_range = string })))` | `{}` | no |
 | <a name="input_zone"></a> [zone](#input\_zone) | GCP compute zone ID | `string` | n/a | yes |
 
 ## Outputs

@@ -12,8 +12,8 @@ locals {
 
 locals {
   config_connector_gcp_derived_name = "serviceAccount:${var.project_id}.svc.id.goog[cnrm-system/cnrm-controller-manager]"
-  gke_cluster_all_nodes_tags        = lookup(var.gke_cluster_node_pools_tags, "all", ["${var.gke_cluster_name}-node"])
   gke_cluster_registry_project_ids  = var.gke_cluster_enable_registry_access ? [var.project_id] : []
+  # gke_cluster_all_nodes_tags        = lookup(var.gke_cluster_node_pools_tags, "all", ["${var.gke_cluster_name}-node"])
 }
 
 locals {
