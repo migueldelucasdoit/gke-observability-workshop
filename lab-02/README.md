@@ -53,6 +53,16 @@ k6 version
 
 * Add the liveness and readiness probes to the main container of the template Pod spec in the [API deployment](../lab-01/app/api/k8s/deployment.yaml). You can use [Cloud Editor](https://cloud.google.com/shell/docs/launching-cloud-shell-editor) for that purpose.
 
+* Set the [*CLOUDSDK_CORE_PROJECT*](https://cloud.google.com/compute/docs/gcloud-compute#default_project) environment variable to your GCP project ID.
+```
+export CLOUDSDK_CORE_PROJECT=$(gcloud config get-value project)
+```
+
+* Set the [default compute region](https://cloud.google.com/compute/docs/gcloud-compute#set-default-region-zone-environment-variables) environment variable to `europe-west6`.
+```
+export CLOUDSDK_COMPUTE_REGION=europe-west6
+```
+
 * Set the [default compute zone](https://cloud.google.com/compute/docs/gcloud-compute#set-default-region-zone-environment-variables) environment variable to `europe-west6-a`.
 ```
 export CLOUDSDK_COMPUTE_ZONE=europe-west6a
