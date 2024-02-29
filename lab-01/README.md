@@ -97,13 +97,13 @@ export SKAFFOLD_DEFAULT_REPO=$CLOUDSDK_COMPUTE_REGION-docker.pkg.dev/$CLOUDSDK_C
 
 * If you just want to [build and push](https://skaffold.dev/docs/builders/builder-types/docker/) the containers to the Artifact Registry repository use.
 ```
-skaffold build
+skaffold build -f skaffold-01.yaml
 ```
 
 * If you want to build and push the containers to the Artifact Registry repository and also [deploy the application](https://skaffold.dev/docs/deployers/kubectl/) to the GKE cluster use.
 ```
 kubectl create ns blueprints
-skaffold run
+skaffold run -f skaffold-01.yaml
 ```
 
 ## Cluster Application Check / Playground

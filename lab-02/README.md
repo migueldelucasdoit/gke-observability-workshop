@@ -53,6 +53,8 @@ k6 version
 
 * Add the liveness and readiness probes to the main container of the template Pod spec in the [API deployment](../lab-01/app/api/k8s/deployment.yaml). You can use [Cloud Editor](https://cloud.google.com/shell/docs/launching-cloud-shell-editor) for that purpose.
 
+## Solution
+
 * Set the [*CLOUDSDK_CORE_PROJECT*](https://cloud.google.com/compute/docs/gcloud-compute#default_project) environment variable to your GCP project ID.
 ```
 export CLOUDSDK_CORE_PROJECT=$(gcloud config get-value project)
@@ -86,7 +88,12 @@ gcloud container clusters get-credentials gke-otel-blueprints --region $CLOUDSDK
 
 * Position yourself in the lab folder.
 ```
-cd ~/gke-observability-workshop/lab-02/app
+cd ~/gke-observability-workshop/lab-01/app
+```
+
+* Copy the Skaffold configuration file [`skaffold-02.yaml`](./app/skaffold-02.yaml) to the [`lab-01/app`](../lab-01/app/) folder.
+```
+cp ../lab-02/app/skaffold-02.yaml ./
 ```
 
 * Replace `PROJECT_ID_VALUE` in the application deployment specs using the following command.
@@ -101,8 +108,10 @@ export SKAFFOLD_DEFAULT_REPO=$CLOUDSDK_COMPUTE_REGION-docker.pkg.dev/$CLOUDSDK_C
 
 * [Deploy the application](https://skaffold.dev/docs/deployers/kubectl/) to the GKE cluster.
 ```
-skaffold run
+skaffold run -f skaffold-02.yaml
 ```
+
+* You can check a deployment sample file with the solution [here](./app/api/k8s/deployment.yaml).
 
 ## Cluster Application Check / Playground
 
@@ -118,8 +127,6 @@ blueprints-worker-5b44df6bff-qww8c   1/1     Running   0          97s
 ```
 k6 run loadtest/test.js
 ```
-
-* You can check a possible solution [here](./app/api/k8s/deployment.yaml).
 
 ## Links
 - [Skaffold documentation](https://skaffold.dev/docs)
