@@ -86,7 +86,12 @@ gcloud container clusters get-credentials gke-otel-blueprints --region $CLOUDSDK
 
 * Position yourself in the lab folder.
 ```
-cd ~/gke-observability-workshop/lab-01/app
+cd ~/gke-observability-workshop/lab-02/app
+```
+
+* Replace `PROJECT_ID_VALUE` in the application deployment specs using the following command.
+```
+find . -type f -exec sed -i s/PROJECT_ID_VALUE/$CLOUDSDK_CORE_PROJECT/ {} +
 ```
 
 * Point the [*SKAFFOLD_DEFAULT_REPO*](https://skaffold.dev/docs/environment/image-registries/#:~:text=default%2Drepo%20%3Cmyrepo%3E-,SKAFFOLD_DEFAULT_REPO,-environment%20variable) environment variable to the Artifact Registry repository.
