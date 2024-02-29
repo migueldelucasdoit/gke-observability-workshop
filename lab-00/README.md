@@ -31,7 +31,7 @@ On this lab, we will deploy the required base infrastructure composed of:
 ```
 gcloud version
 helm version
-kubectl version --short --client-only
+kubectl version --client=true --output=yaml
 skaffold version
 terraform version
 ```
@@ -65,9 +65,8 @@ terraform init
 ```
 gcloud config get-value project
 ```
-* 
 
-* Apply the stack using the following command. *(If you're prompted with a dialog box, click on "Authorize".)* Enter `yes`.
+* Apply the Terraform stack using the following command. *(If you're prompted with a dialog box, click on "Authorize".)* Enter `yes`. The stack takes about *20 minutes* to be fully deployed.
 ```
 terraform apply --var-file terraform.tfvars.sample
 ```
@@ -88,13 +87,19 @@ Server Version: v1.29.0-gke.1381000
 ```
 
 * The GKE cluster has been created with two node pools. Ensure that the nodes are ready.
-```
-kubectl get nodes -o wide
+```shell
+$ kubectl get nodes
+NAME                                                  STATUS   ROLES    AGE   VERSION
+gke-gke-otel-bluepri-system-node-pool-0c13885d-7vx2   Ready    <none>   11m   v1.29.0-gke.1381000
+gke-gke-otel-bluepri-system-node-pool-6d7d3593-cd22   Ready    <none>   11m   v1.29.0-gke.1381000
+gke-gke-otel-bluepri-system-node-pool-706d2e37-2t9g   Ready    <none>   11m   v1.29.0-gke.1381000
+gke-gke-otel-bluepri-worker-node-pool-2b4185e8-nx58   Ready    <none>   11m   v1.29.0-gke.1381000
 ```
 
 * The GKE cluster has enabled several features that will be needed in the next labs.
     - Check that [Config Connector](https://cloud.google.com/config-connector/docs/troubleshooting#check-if-running) is running.
     - Check that [Google Managed Service for Prometheus](https://cloud.google.com/stackdriver/docs/managed-prometheus/troubleshooting#no-errors) is running.
+    - Check that the [Gateway API](https://cloud.google.com/kubernetes-engine/docs/how-to/deploying-gateways#verify-internal) is enabled.
 
 
 ## Links

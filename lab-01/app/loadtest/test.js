@@ -3,12 +3,12 @@ import { sleep } from 'k6';
 import { randomIntBetween } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
 
 export const options = {
-  vus: 20,
+  vus: 1,
   duration: '60s',
 };
 
 export default function () {
-  // send custom payload/post data
+  // Send custom payload/post data
   const date = new Date();
   const payload = JSON.stringify({
     timestamp: date.toISOString(), //RFC 3339 format
@@ -16,9 +16,12 @@ export default function () {
     memory_usage: 0.45,
     cpu_usage: 0.23
   });
+  // Gateway IP address 
+  // TODO Replace with the IP address of your external Load Balancer
+  const gatewayIP = 'GATEWAY_IP_VALUE'
 
- // send post request with custom header and payload
-  http.post('http://34.110.142.233/telemetry', payload, {
+  // Send post request with custom header and payload
+  http.post(`http://${gatewayIP}/telemetry`, payload, {
     headers: {
       'Content-Type': 'application/json',
     },
