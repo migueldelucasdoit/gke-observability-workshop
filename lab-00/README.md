@@ -48,6 +48,14 @@ git clone https://github.com/migueldelucasdoit/gke-observability-workshop.git
 cd ~/gke-observability-workshop/lab-00/iac
 ```
 
+* Add all the needed repositories for the Helm charts.
+```
+helm repo add kedacore https://kedacore.github.io/charts
+helm repo add jetstack https://charts.jetstack.io
+helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+helm repo update
+```
+
 * Initialize the Terraform environment using the following command: 
 ```
 terraform init
@@ -57,6 +65,7 @@ terraform init
 ```
 gcloud config get-value project
 ```
+* 
 
 * Apply the stack using the following command. *(If you're prompted with a dialog box, click on "Authorize".)* Enter `yes`.
 ```
@@ -67,7 +76,7 @@ terraform apply --var-file terraform.tfvars.sample
 
 * Once the stack is deployed, retrieve the GKE cluster credentials using this command: 
 ```
-gcloud container clusters get-credentials gke-otel-blueprints --region europe-west6`
+gcloud container clusters get-credentials gke-otel-blueprints --region europe-west6
 ```
 
 * Ensure that you can access the Kubernetes API Server. You should see something like:
@@ -78,14 +87,18 @@ Kustomize Version: v5.0.4-0.20230601165947-6ce0bf390ce3
 Server Version: v1.29.0-gke.1381000
 ```
 
-* The GKE cluster has been created with two node pools and it has enabled several features that will be needed in the next labs.
+* The GKE cluster has been created with two node pools. Ensure that the nodes are ready.
+```
+kubectl get nodes -o wide
+```
+
+* The GKE cluster has enabled several features that will be needed in the next labs.
     - Check that [Config Connector](https://cloud.google.com/config-connector/docs/troubleshooting#check-if-running) is running.
     - Check that [Google Managed Service for Prometheus](https://cloud.google.com/stackdriver/docs/managed-prometheus/troubleshooting#no-errors) is running.
 
 
 ## Links
 
-- https://cloud.google.com/sdk/gcloud/reference/container/clusters/create
-- https://kubernetes.io/docs/reference/kubectl/cheatsheet/
-- https://phoenixnap.com/kb/kubectl-commands-cheat-sheet
-- https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
+- [Basic Terraform commands](https://cloud.google.com/docs/terraform/basic-commands)
+- [Terraform stack documentation](./iac/README.md)
+- [kubectl cheat sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
