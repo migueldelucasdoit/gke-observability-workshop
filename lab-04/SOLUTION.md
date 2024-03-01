@@ -7,7 +7,7 @@
 
 ## Steps
 
-* You can check sample PodMonitoring files with the modifications required for both ([*api*](./app/api/k8s/podmonitoring.yaml) and [*worker*](./app/worker/k8s/podmonitoring.yaml) components.
+* You can check sample PodMonitoring files with the modifications required for both [*api*](./app/api/k8s/podmonitoring.yaml) and [*worker*](./app/worker/k8s/podmonitoring.yaml) components.
 
 * Set the [*CLOUDSDK_CORE_PROJECT*](https://cloud.google.com/compute/docs/gcloud-compute#default_project) environment variable to your GCP project ID.
 ```
