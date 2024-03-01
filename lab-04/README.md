@@ -6,8 +6,9 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## Introduction
-Each application (`api` and `worker`) contains a `metrics` package defining and populating Prometheus metrics. Those metrics are exposed on a specific internal port in order to be scraped.
-Since Managed Prometheus is enabled on the GKE cluster, defining `PodMonitoring` objects is the only required step for these metrics to be scraped by GMP.
+* Each application component ([*api*](../lab-01/app/api/) and [*worker*](../lab-01/app/worker/)) contains a `metrics` package defining and populating Prometheus metrics. Those metrics are exposed on a specific internal port in order to be scraped.
+* Since Managed Prometheus is enabled on the GKE cluster, defining `PodMonitoring` objects is the only required step for these metrics to be scraped by GMP.
+
 
 ## Deployment
 Create a `PodMonitoring` object for each service (`api` and `worker`) in order to specify how metrics should be scrapped.
