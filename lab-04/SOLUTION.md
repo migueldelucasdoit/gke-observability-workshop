@@ -1,13 +1,13 @@
-# Solution GKE Observability Workshop LAB-03
+# Solution GKE Observability Workshop LAB-04
 
-## GKE Logging
+## GKE Metrics
 
-[![Context](https://img.shields.io/badge/GKE%20Observability%20Workshop-03-blue.svg)](#)
+[![Context](https://img.shields.io/badge/GKE%20Observability%20Workshop-04-blue.svg)](#)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## Steps
 
-* You can check sample Deployment files with the modifications required for both ([*api*](./app/api/k8s/deployment.yaml) and [*worker*](./app/worker/k8s/deployment.yaml) components.
+* You can check sample PodMonitoring files with the modifications required for both ([*api*](./app/api/k8s/podmonitoring.yaml) and [*worker*](./app/worker/k8s/podmonitoring.yaml) components.
 
 * Set the [*CLOUDSDK_CORE_PROJECT*](https://cloud.google.com/compute/docs/gcloud-compute#default_project) environment variable to your GCP project ID.
 ```
@@ -45,9 +45,9 @@ gcloud container clusters get-credentials gke-otel-blueprints --region $CLOUDSDK
 cd ~/gke-observability-workshop/lab-01/app
 ```
 
-* Copy the Skaffold configuration file [`skaffold-03.yaml`](./app/skaffold-02.yaml) to the [`lab-01/app`](../lab-01/app/) folder.
+* Copy the Skaffold configuration file [`skaffold-04.yaml`](./app/skaffold-04.yaml) to the [`lab-01/app`](../lab-01/app/) folder.
 ```
-cp ../lab-03/app/skaffold-03.yaml ./
+cp ../lab-04/app/skaffold-04.yaml ./
 ```
 
 * Replace `PROJECT_ID_VALUE` in the application deployment specs using the following command.
@@ -62,23 +62,5 @@ export SKAFFOLD_DEFAULT_REPO=$CLOUDSDK_COMPUTE_REGION-docker.pkg.dev/$CLOUDSDK_C
 
 * [Deploy the application](https://skaffold.dev/docs/deployers/kubectl/) to the GKE cluster.
 ```
-skaffold run -f skaffold-03.yaml
-```
-
-* Create the logging bucket
-
-```shell
-gcloud logging buckets create blueprints-app-logs --location=global --enable-analytics --retention-days 10
-```
-
-* Create the logging sink to route application logs.
-
-```shell
-gcloud logging sinks create blueprints-app-logs-sink logging.googleapis.com/projects/$CLOUDSDK_CORE_PROJECT/locations/global/buckets/blueprints-app-logs --log-filter "resource.labels.cluster_name=\"gke-otel-blueprints\" AND resource.type=\"k8s_container\" AND labels.\"k8s-pod/logs\"=\"app-sink\""
-```
-
-* Create the logging sink that avoid logs duplication. This sink avoid application logs duplication in the `_Default` bucket.
-
-```shell
-gcloud logging sinks create blueprints-exclude-app-logs-sink logging.googleapis.com/projects/$CLOUDSDK_CORE_PROJECT/locations/global/buckets/_Default --exclusion=name=application-pods-logs,filter=labels.\"k8s-pod/logs\"=\"app-sink\""
+skaffold run -f skaffold-04.yaml
 ```
