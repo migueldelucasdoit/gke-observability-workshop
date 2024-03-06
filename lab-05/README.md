@@ -82,7 +82,22 @@ kubectl apply -f otelcollector/04-instrumentation.yaml
 
 
 ## Cluster Application Check / Playground
-TODO
+
+* Once the application is deployed, check that the application is running.
+```shell
+$ kubectl get pods -n blueprints
+NAME                                 READY   STATUS    RESTARTS   AGE
+blueprints-api-6bd46d4984-rmx4q      2/2     Running   0          18m
+blueprints-worker-664c67b49d-5w9jj   2/2     Running   0          18m
+otel-collector-7478d64969-sdf57      1/1     Running   0          133m
+```
+
+* Run the [K6 test script](./app/loadtest/test.js) and [check that there are no errors](https://k6.io/docs/get-started/results-output/).
+```
+k6 run loadtest/test.js
+```
+
+
 
 
 ## Links
