@@ -33,10 +33,11 @@ helm version
 kubectl version --client=true --output=yaml
 skaffold version
 terraform version
+k6 version
 ```
 ## Create OpenTelemetry resources
 
-* Previously, we provisioned the [OpenTelemetry Operator](https://opentelemetry.io/docs/kubernetes/operator/) in our cluster. Now we need to provision the [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/) and configure it to autoinstrument our application code and send traces to the Google Cloud Trace service.
+* Previously, we provisioned the [OpenTelemetry Operator](https://opentelemetry.io/docs/kubernetes/operator/) in our cluster. Now we need to provision the [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/) and configure it to inject autoinstrumentation in our application workloads and send traces to the [Google Cloud Trace](https://cloud.google.com/trace/docs) service.
 
 * Obtain credentials for GKE cluster.
 ```
@@ -72,6 +73,12 @@ kubectl apply -f otelcollector/03-collectorconfig.yaml
 ```
 kubectl apply -f otelcollector/04-instrumentation.yaml
 ```
+## Deployment
+
+* You need to add the [required autoinstrumentation annotations](https://opentelemetry.io/docs/kubernetes/operator/automatic/#add-annotations-to-existing-deployments) to the Pod template of both [API component](../lab-01/app/api/k8s/deployment.yaml) and [Worker component](../lab-01/app/worker/k8s/deployment.yaml) Deployments to inject the autoinstrumentation sidecar containers. You can use [Cloud Editor](https://cloud.google.com/shell/docs/launching-cloud-shell-editor) for that purpose.
+
+* Deploy the application changes using [Skaffold](https://skaffold.dev/) as in previous labs. Make sure you deploy only [API component](../lab-01/app/api/k8s/deployment.yaml) and [Worker component](../lab-01/app/worker/k8s/deployment.yaml).
+
 
 
 ## Cluster Application Check / Playground
@@ -80,6 +87,9 @@ TODO
 
 ## Links
 
+- [OpenTelemetry Operator](https://opentelemetry.io/docs/kubernetes/operator/)
+- [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/)
 - [OpenTelemetry Collector Configuration](https://opentelemetry.io/docs/collector/configuration/)
+- 
 - https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 - https://phoenixnap.com/kb/kubectl-commands-cheat-sheet
