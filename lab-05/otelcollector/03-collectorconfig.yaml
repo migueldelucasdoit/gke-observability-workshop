@@ -57,6 +57,7 @@ spec:
           span:
             - attributes["http.target"] == "/healthz"
             - attributes["http.target"] == "/metrics"
+            - attributes["http.target"] == "/readyz"
       batch:
         # batch metrics before sending to reduce API usage
         send_batch_max_size: 200
