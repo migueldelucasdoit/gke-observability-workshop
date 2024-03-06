@@ -97,14 +97,15 @@ otel-collector-7478d64969-sdf57      1/1     Running   0          133m
 k6 run loadtest/test.js
 ```
 
+* Check that traces are generated in the [Google Cloud Trace Explorer](https://cloud.google.com/trace/docs/finding-traces). You can filter the traces by attributes that have been automatically included by the collector. 
 
+* Also notice that the traces for health check probes and metrics endpoints do not appear in the Trace Explorer. Can you find where these traces have been [filtered out](./otelcollector/03-collectorconfig.yaml)? 
 
 
 ## Links
 
-- [OpenTelemetry Operator](https://opentelemetry.io/docs/kubernetes/operator/)
-- [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/)
-- [OpenTelemetry Collector Configuration](https://opentelemetry.io/docs/collector/configuration/)
-- 
-- https://kubernetes.io/docs/reference/kubectl/cheatsheet/
-- https://phoenixnap.com/kb/kubectl-commands-cheat-sheet
+- [OpenTelemetry Operator](https://opentelemetry.io/docs/kubernetes/operator/).
+- [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/).
+- [OpenTelemetry Collector Configuration](https://opentelemetry.io/docs/collector/configuration/).
+- [Google Cloud Trace](https://cloud.google.com/trace/docs).
+- [Google Cloud Trace Explorer](https://cloud.google.com/trace/docs/finding-traces).
