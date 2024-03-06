@@ -1,63 +1,67 @@
-# Terraform stack for Open Telemetry Blueprints
+# Solution GKE Observability Workshop LAB-05
 
-## Description
-Provisioning stack with Open Telemetry resources.
+## GKE Distributed Tracing
 
-## Prerequisites
-* [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/) The Kubernetes command-line tool, kubectl, allows you to run commands against Kubernetes clusters.
-* [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) Google Cloud Command Line Interface.
+[![Context](https://img.shields.io/badge/GKE%20Observability%20Workshop-05-blue.svg)](#)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-## Connection to GKE control plane
+## Steps
+
+* You can check sample Deployment files with the modifications required for both ([*api*](./app/api/k8s/deployment.yaml) and [*worker*](./app/worker/k8s/deployment.yaml) components.
+
+* Set the [*CLOUDSDK_CORE_PROJECT*](https://cloud.google.com/compute/docs/gcloud-compute#default_project) environment variable to your GCP project ID.
+```
+export CLOUDSDK_CORE_PROJECT=$(gcloud config get-value project)
+```
+
+* Set the [default compute region](https://cloud.google.com/compute/docs/gcloud-compute#set-default-region-zone-environment-variables) environment variable to `europe-west6`.
+```
+export CLOUDSDK_COMPUTE_REGION=europe-west6
+```
+
+* Set the [default compute zone](https://cloud.google.com/compute/docs/gcloud-compute#set-default-region-zone-environment-variables) environment variable to `europe-west6-a`.
+```
+export CLOUDSDK_COMPUTE_ZONE=europe-west6a
+```
+
+* Obtain the name of the [Artifact Registry container image repository](https://cloud.google.com/sdk/gcloud/reference/artifacts/repositories/list) that has been provisioned in the environment. This repository will be used to store the container images of the application.
+
+```
+export REPO_NAME=$(gcloud artifacts repositories list --location=$CLOUDSDK_COMPUTE_REGION --format="value(name)")
+```
+
+* Set up [Artifact Registry authentication for Docker](https://cloud.google.com/artifact-registry/docs/docker/authentication#gcloud-helper)
+```
+gcloud auth configure-docker $CLOUDSDK_COMPUTE_REGION-docker.pkg.dev
+```
+
 * Obtain credentials for GKE cluster.
 ```
-gcloud container clusters get-credentials gke-otel-blueprints --region europe-west6
+gcloud container clusters get-credentials gke-otel-blueprints --region $CLOUDSDK_COMPUTE_REGION
 ```
 
-* Set [USE_GKE_GCLOUD_AUTH_PLUGIN](https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke) environment variable.
+* Position yourself in the lab folder.
 ```
-export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-```
-
-* Use kubectl as usual.
-
-## Create Open Telemetry resources
-* Create the `blueprints` namespace and K8s service account
-```
-kubectl apply -f 01-base.yaml
+cd ~/gke-observability-workshop/lab-01/app
 ```
 
-* Configure the GCP IAM resources using Config Connector.
+* Copy the Skaffold configuration file [`skaffold-05.yaml`](./app/skaffold-05.yaml) to the [`lab-01/app`](../../lab-01/app/) folder.
 ```
-kubectl apply -f 02-workloadidentity.yaml
-```
-
-* Create the Open Telemetry [Connector](https://opentelemetry.io/docs/collector/).
-```
-kubectl apply -f 03-collectorconfig.yaml
+cp ../../lab-05/app/skaffold-05.yaml ./
 ```
 
-* Create the Open Telemetry [Instrumentation](https://opentelemetry.io/docs/instrumentation/).
+* Replace `PROJECT_ID_VALUE` in the application deployment specs using the following command.
 ```
-kubectl apply -f 04-instrumentation.yaml
-```
-
-## Delete Open Telemetry resources
-
-* Delete the Open Telemetry [Instrumentation](https://opentelemetry.io/docs/instrumentation/).
-```
-kubectl delete -f 04-instrumentation.yaml
+find . -type f -exec sed -i s/PROJECT_ID_VALUE/$CLOUDSDK_CORE_PROJECT/ {} +
 ```
 
-* Delete the Open Telemetry [Connector](https://opentelemetry.io/docs/collector/).
+* Point the [*SKAFFOLD_DEFAULT_REPO*](https://skaffold.dev/docs/environment/image-registries/#:~:text=default%2Drepo%20%3Cmyrepo%3E-,SKAFFOLD_DEFAULT_REPO,-environment%20variable) environment variable to the Artifact Registry repository.
 ```
-kubectl delete -f 03-collectorconfig.yaml
-```
-
-* Delete the GCP IAM resources using Config Connector.
-```
-kubectl delete -f 02-workloadidentity.yaml
+export SKAFFOLD_DEFAULT_REPO=$CLOUDSDK_COMPUTE_REGION-docker.pkg.dev/$CLOUDSDK_CORE_PROJECT/$REPO_NAME
 ```
 
-
-
+* [Deploy the application](https://skaffold.dev/docs/deployers/kubectl/) to the GKE cluster.
+```
+skaffold run -f skaffold-05.yaml
+```
 
