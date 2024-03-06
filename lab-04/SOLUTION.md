@@ -47,7 +47,7 @@ cd ~/gke-observability-workshop/lab-01/app
 
 * Copy the Skaffold configuration file [`skaffold-04.yaml`](./app/skaffold-04.yaml) to the [`lab-01/app`](../lab-01/app/) folder.
 ```
-cp ../lab-04/app/skaffold-04.yaml ./
+cp ../../lab-04/app/skaffold-04.yaml ./
 ```
 
 * Replace `PROJECT_ID_VALUE` in the application deployment specs using the following command.

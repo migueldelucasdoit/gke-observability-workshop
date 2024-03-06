@@ -1,0 +1,50 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: otel-collector-sa
+  namespace: blueprints
+  annotations:
+      cnrm.cloud.google.com/project-id: PROJECT_ID
+spec:
+  displayName: Service account for Open Telemetry connector.
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: otel-collector-policy-member-binding
+  namespace: blueprints
+spec:
+  member: serviceAccount:otel-collector-sa@PROJECT_ID.iam.gserviceaccount.com
+  role: roles/cloudtrace.agent
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: projects/PROJECT_ID
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: otel-collector-policy-member-binding-2
+  namespace: blueprints
+spec:
+  member: serviceAccount:otel-collector-sa@PROJECT_ID.iam.gserviceaccount.com
+  role: roles/monitoring.metricWriter
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: projects/PROJECT_ID
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: otel-collector-iampolicy-workload-identity
+  namespace: blueprints
+spec:
+  resourceRef:
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMServiceAccount
+    name: otel-collector-sa
+  bindings:
+    - role: roles/iam.workloadIdentityUser
+      members:
+        - serviceAccount:PROJECT_ID.svc.id.goog[blueprints/otel-collector-sa]

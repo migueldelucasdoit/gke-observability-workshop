@@ -34,9 +34,39 @@ kubectl version --client=true --output=yaml
 skaffold version
 terraform version
 ```
-* Previously, we provisioned the Open Telemetry Operator in our cluster. 
+## Create Open Telemetry resources
 
-## Deployment
+* Previously, we provisioned the [OpenTelemetry Operator](https://opentelemetry.io/docs/kubernetes/operator/) in our cluster. Now we need to provision the [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/) and configure it to autoinstrument our application code and send traces to the Google Cloud Trace service.
+
+* Obtain credentials for GKE cluster.
+```
+gcloud container clusters get-credentials gke-otel-blueprints --region $CLOUDSDK_COMPUTE_REGION
+```
+
+* Position yourself in the lab folder.
+```
+cd ~/gke-observability-workshop/lab-05/app
+```
+
+* Create the K8s service account with permissions.
+```
+kubectl apply -f otelcollector/01-rbac.yaml
+```
+
+* Configure the GCP IAM resources using Config Connector.
+```
+kubectl apply -f otelcollector/02-workloadidentity.yaml
+```
+
+* Create the [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/). Take a look to the configuration of the collector and try to understand how it works.
+```
+kubectl apply -f otelcollector/03-collectorconfig.yaml
+```
+
+* Create the [OpenTelemetry Instrumentation](https://opentelemetry.io/docs/instrumentation/) resource.
+```
+kubectl apply -f otelcollector/04-instrumentation.yaml
+```
 
 
 ## Cluster Application Check / Playground
@@ -45,6 +75,6 @@ TODO
 
 ## Links
 
-- https://cloud.google.com/sdk/gcloud/reference/container/clusters/create
+- [OpenTelemetry Collector Configuration](https://opentelemetry.io/docs/collector/configuration/)
 - https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 - https://phoenixnap.com/kb/kubectl-commands-cheat-sheet

@@ -47,7 +47,7 @@ cd ~/gke-observability-workshop/lab-01/app
 
 * Copy the Skaffold configuration file [`skaffold-03.yaml`](./app/skaffold-02.yaml) to the [`lab-01/app`](../lab-01/app/) folder.
 ```
-cp ../lab-03/app/skaffold-03.yaml ./
+cp ../../lab-03/app/skaffold-03.yaml ./
 ```
 
 * Replace `PROJECT_ID_VALUE` in the application deployment specs using the following command.
@@ -80,5 +80,5 @@ gcloud logging sinks create blueprints-app-logs-sink logging.googleapis.com/proj
 * Create the logging sink that avoid logs duplication. This sink avoid application logs duplication in the `_Default` bucket.
 
 ```shell
-gcloud logging sinks create blueprints-exclude-app-logs-sink logging.googleapis.com/projects/$CLOUDSDK_CORE_PROJECT/locations/global/buckets/_Default --exclusion=name=application-pods-logs,filter=labels.\"k8s-pod/logs\"=\"app-sink\""
+gcloud logging sinks create blueprints-exclude-app-logs-sink logging.googleapis.com/projects/$CLOUDSDK_CORE_PROJECT/locations/global/buckets/_Default --exclusion="name=application-pods-logs,filter=labels.\"k8s-pod/logs\"=\"app-sink\""
 ```
