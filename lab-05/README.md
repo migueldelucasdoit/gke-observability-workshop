@@ -34,7 +34,7 @@ kubectl version --client=true --output=yaml
 skaffold version
 terraform version
 ```
-## Create Open Telemetry resources
+## Create OpenTelemetry resources
 
 * Previously, we provisioned the [OpenTelemetry Operator](https://opentelemetry.io/docs/kubernetes/operator/) in our cluster. Now we need to provision the [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/) and configure it to autoinstrument our application code and send traces to the Google Cloud Trace service.
 
@@ -45,7 +45,12 @@ gcloud container clusters get-credentials gke-otel-blueprints --region $CLOUDSDK
 
 * Position yourself in the lab folder.
 ```
-cd ~/gke-observability-workshop/lab-05/app
+cd ~/gke-observability-workshop/lab-05
+```
+
+* Replace `PROJECT_ID_VALUE` in the collector deployment specs using the following command.
+```
+find . -type f -exec sed -i s/PROJECT_ID_VALUE/$CLOUDSDK_CORE_PROJECT/ {} +
 ```
 
 * Create the K8s service account with permissions.
