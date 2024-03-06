@@ -18,7 +18,8 @@ In this workshop, we will look at the landscape of GKE Observability with specia
 | [lab-03](./lab-03/README.md) | GKE Logging |
 | [lab-04](./lab-04/README.md) | GKE Metrics |
 | [lab-05](./lab-05/README.md) | GKE Distributed Tracing |
-| [lab-06](./lab-06/README.md) | GKE Monitoring and alerting |
+| [lab-06](./lab-06/README.md) | Filter GKE Logs |
+| [lab-07](./lab-07/README.md) | GKE Monitoring and Alerting |
 
 ## Workshop presentation slides.
 GKE Observability Workshop [presentation](https://docs.google.com/presentation/d/1ssd_Z8ykpXzf_50pVToBueMJ_JDzJi9H1bmKgDuGPfk/edit?usp=sharing) that can be used as a guide for exercises.

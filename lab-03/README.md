@@ -18,8 +18,10 @@ All these tools are available in Google Cloud Cloud Shell which can be [launched
 
 
 ## Introduction
-* The goal of this lab is to create a logging bucket with analytics enabled. This logging bucket will be associated with a log sink to route application logs to this bucket. * It will use some labels for filtering relevant application logs while excluding telemetry logs.
+* The goal of this lab is to create a logging bucket with analytics enabled. This logging bucket will be associated with a log sink to route application logs to this bucket. * It will use some labels for filtering relevant application logs.
 * We will also create another log sink to avoid application logs duplication by filtering out application logs from the `_Default` logging bucket.
+
+![Logging Routing](../assets/routing-overview.png)
 
 ## Preparation
 

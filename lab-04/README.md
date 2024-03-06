@@ -19,7 +19,9 @@ All these tools are available in Google Cloud Cloud Shell which can be [launched
 
 ## Introduction
 * Each application component ([*api*](../lab-01/app/api/) and [*worker*](../lab-01/app/worker/) contains a `metrics` package defining and populating Prometheus metrics. Those metrics are exposed on a specific internal port in order to be scraped.
-* Since Managed Prometheus is enabled on the GKE cluster, defining `PodMonitoring` objects is the only required step for these metrics to be scraped by GMP.
+* Since [Google Cloud Managed Service for Prometheus](https://cloud.google.com/stackdriver/docs/managed-prometheus) is enabled on the GKE cluster, defining `PodMonitoring` objects is the only required step for these metrics to be scraped by GMP.
+
+![GMP Architecture](../assets/gmp-architecture.png)
 
 ## Preparation
 
