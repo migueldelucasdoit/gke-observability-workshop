@@ -18,7 +18,7 @@ All these tools are available in Google Cloud Cloud Shell which can be [launched
 
 
 ## Introduction
-* The goal of this lab is 
+* The goal of this lab is create a Cloud Monitoring Dashboard that reflects the metrics 
 
 ## Preparation
 
