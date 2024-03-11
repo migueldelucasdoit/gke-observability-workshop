@@ -56,7 +56,7 @@ You can calculate the burn rate using this formula `burn rate = budget consumed 
     * Period = 28 days or 672 hours
 
 ## Playground Check
-TODO
+* Check on the **SLO View** that all the monitoring resources have been created.
 
 ## Links
 
@@ -69,5 +69,5 @@ TODO
 - [Creating SLIs from metrics](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/sli-metrics/overview).
 - [Using Prometheus metrics for availability and latency SLIs](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/sli-metrics/prometheus).
 - [SLO Monitoring using API](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/using-api).
-
+- [Alerting on your burn rate](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/alerting-on-budget-burn-rate).
 
