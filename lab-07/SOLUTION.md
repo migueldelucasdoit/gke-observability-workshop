@@ -61,7 +61,7 @@ $ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Con
 $ ACCESS_TOKEN=$(gcloud auth print-access-token)
 $ SERVICE_ID=$(curl --silent --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X GET https://monitoring.googleapis.com/v3/projects/${CLOUDSDK_CORE_PROJECT}/services | jq -r '.services[0].name')
 $ SLO_ID=worker-service-slo
-$ find . -type f -exec sed -i s/SERVICE_ID/$SERVICE_ID/ {} +
+$ find . -type f -exec sed -i s#SERVICE_ID#$SERVICE_ID# {} +
 $ find . -type f -exec sed -i s/SLO_ID/$SLO_ID/ {} +
 ```
 
