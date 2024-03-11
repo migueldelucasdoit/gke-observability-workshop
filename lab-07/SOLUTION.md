@@ -1,3 +1,5 @@
+# Solution GKE Observability Workshop LAB-07
+
 ## GKE Monitoring and Alerting
 
 [![Context](https://img.shields.io/badge/GKE%20Observability%20Workshop-07-blue.svg)](#)
@@ -16,11 +18,6 @@ export CLOUDSDK_CORE_PROJECT=$(gcloud config get-value project)
 export CLOUDSDK_COMPUTE_REGION=europe-west6
 ```
 
-* Set the [default compute zone](https://cloud.google.com/compute/docs/gcloud-compute#set-default-region-zone-environment-variables) environment variable to `europe-west6-a`.
-```
-export CLOUDSDK_COMPUTE_ZONE=europe-west6a
-```
-
 * Position yourself in the lab folder.
 ```
 cd ~/gke-observability-workshop/lab-07
@@ -31,4 +28,21 @@ cd ~/gke-observability-workshop/lab-07
 * Validate the dashboard using the template.
 ```
 gcloud monitoring dashboards create --validate-only --config-from-file ./monitoring/dashboard.json
+```
+
+* Create the Google Cloud Monitoring dashboard using the template.
+```
+gcloud monitoring dashboards create --config-from-file ./monitoring/dashboard.json
+```
+
+* Replace `PROJECT_ID_VALUE` in the [worker service definition](./monitoring/service-definition.json) spec template using the following command.
+```
+find . -type f -exec sed -i s/PROJECT_ID_VALUE/$CLOUDSDK_CORE_PROJECT/ {} +
+```
+
+* Create the [worker service](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/using-api#service-create) using the Google Cloud API.
+```
+ACCESS_TOKEN=$(gcloud auth print-access-token)
+SERVICE_ID=worker-service
+curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d @monitoring/service-definition.json https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services?service_id=${SERVICE_ID}
 ```

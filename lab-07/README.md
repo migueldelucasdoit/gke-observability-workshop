@@ -39,14 +39,17 @@ k6 version
 ## Deployment
 
 
-* Create the Cloud Monitoring custom dashboard with the following information.
+* Create a Cloud Monitoring [custom dashboard](https://cloud.google.com/monitoring/charts/dashboards) with the following charts.
     * *Ingress bytes count* per GKE Pod for the `blueprints` namespace. You can check [Google Cloud Monitoring networking metrics](https://cloud.google.com/monitoring/api/metrics_gcp#gcp-networking) to find a valid metric to represent.
     * *Number of published messages by pod* for the [API component](../lab-01/app/api/metrics/main.go).
     * *Total size of published messages by pod* for the [API component](../lab-01/app/api/metrics/main.go).
     * *Number of received requests by pod* breakdown by `path` and `code` for the [API component](../lab-01/app/api/metrics/main.go).
     * *Number of received messages by pod* for the [WORKER component](../lab-01/app/worker/metrics/main.go).
-    * *Number of errors while receiving messages by pod* for the [WORKER component](../lab-01/app/worker/metrics/main.go).
+    * *Number of errors while receiving messages by pod* for the [WORKER component](../lab-01/app/worker/metrics/main.go). Add a threshold line for the widget.
     * *Total size of received messages by pod* for the [WORKER component](../lab-01/app/worker/metrics/main.go).
+
+* Create a metric-based [SLI and availability SLO](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring) for the [Worker component](../lab-01/app/worker/k8s/deployment.yaml).
+You should be successfully processing at least *95 percent* of the received messages in the worker component in a 24 hours rolling window. 
 
 ## Playground Check
 TODO
@@ -55,7 +58,11 @@ TODO
 
 - [Create and manage custom dashboards](https://cloud.google.com/monitoring/charts/dashboards).
 - [Select metrics for charts on dashboards](https://cloud.google.com/monitoring/charts/selecting-aggregating-metrics).
+- [Create charts with Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer)
+- [Set chart display options](https://cloud.google.com/monitoring/charts/chart-view-options#threshold-option).
 - [Google Cloud Monitoring networking metrics](https://cloud.google.com/monitoring/api/metrics_gcp#gcp-networking).
 - [Google Cloud Monitoring GKE system metrics](https://cloud.google.com/monitoring/api/metrics_kubernetes).
+- [Creating SLIs from metrics](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/sli-metrics/overview).
+- [Using Prometheus metrics for availability and latency SLIs](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/sli-metrics/prometheus).
 
 
