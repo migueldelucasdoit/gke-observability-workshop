@@ -1,0 +1,25 @@
+{
+    "displayName": "Burn rate on 95% Availability, rolling 28 days for SLO_ID",
+    "combiner": "AND",
+    "enabled": true,
+    "notificationChannels": [],
+    "documentation": {
+        "content": "SLO burn for the past 60m exceeded the acceptable budget burn rate.",
+        "mimeType": "text/markdown"
+    },
+    "conditions": [
+        {
+            "displayName": "Burn rate on 95% Availability, rolling 28 days",
+            "conditionThreshold": {
+                "aggregations": [],
+                "comparison": "COMPARISON_GT",
+                "duration": "0s",
+                "filter": "select_slo_burn_rate(\"projects/PROJECT_ID_VALUE/services/SERVICE_ID/serviceLevelObjectives/SLO_ID\", \"60m\")",
+                "thresholdValue": 13.44,
+                "trigger": {
+                    "count": 1
+                }
+            }
+        }
+    ]
+}

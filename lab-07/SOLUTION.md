@@ -51,7 +51,23 @@ $ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Con
 
 ```
 $ ACCESS_TOKEN=$(gcloud auth print-access-token)
-$ SERVICE_ID=blueprints-worker
+$ SERVICE_ID=$(curl --silent --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X GET https://monitoring.googleapis.com/v3/projects/${CLOUDSDK_CORE_PROJECT}/services | jq -r '.services[0].name')
 $ SLO_ID=worker-service-slo
 $ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d @monitoring/slo-definition.json "https://monitoring.googleapis.com/v3/projects/${CLOUDSDK_CORE_PROJECT}/services/${SERVICE_ID}/serviceLevelObjectives?service_level_objective_id=${SLO_ID}"
+```
+
+* Replace the environment values in the [SLO alert template](./monitoring/slo-alert.json).
+```
+$ SERVICE_ID=$(curl --silent --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X GET https://monitoring.googleapis.com/v3/projects/${CLOUDSDK_CORE_PROJECT}/services | jq -r '.services[0].name')
+$ SLO_ID=worker-service-slo
+$ find . -type f -exec sed -i s/PROJECT_ID_VALUE/$CLOUDSDK_CORE_PROJECT/ {} +
+$ find . -type f -exec sed -i s/SERVICE_ID/$SERVICE_ID/ {} +
+$ find . -type f -exec sed -i s/SLO_ID/$SLO_ID/ {} +
+```
+
+* Create the [SLO alert](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/create-policy-api) using the Cloud Monitoring API.
+
+```
+$ ACCESS_TOKEN=$(gcloud auth print-access-token)
+$ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d @monitoring/slo-alert.json https://monitoring.googleapis.com/v3/projects/${CLOUDSDK_CORE_PROJECT}/alertPolicies
 ```

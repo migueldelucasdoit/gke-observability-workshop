@@ -8,6 +8,6 @@
         }
     },
     "goal": 0.95,
-    "rollingPeriod": "86400s",
-    "displayName": "95% Availability, rolling 24 hours"
+    "rollingPeriod": "2419200s",
+    "displayName": "95% Availability, rolling 28 days"
 }
