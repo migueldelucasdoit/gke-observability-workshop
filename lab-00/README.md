@@ -14,65 +14,96 @@
 All these tools are available in Google Cloud Cloud Shell which can be [launched](https://cloud.google.com/shell/docs/launching-cloud-shell) from the Google Cloud console.
 
 ## Introduction
-On this lab, will deploy the required base infrastructure composed of:
+On this lab, we will deploy the required base infrastructure composed of:
 - A VPC with necessary network configurations
 - A subnet with secondary ranges for GKE pods and services
 - A GKE cluster with 2 node pools
 - An Artifact Registry repository
 - A Pub-Sub topic with its associated subscription
-- CertManager and OpenTelemetry operator using HELM charts
+- CertManager and OpenTelemetry operator using Helm charts
 
-## Deployment
+## Preparation
 
-Once you've launched your Cloud Shell, clone this repository using the following command: `git clone https://github.com/migueldelucasdoit/gke-observability-workshop.git` (TODO: move the repository under the DoiT organization)
+* Assignment of the lab users and playgrounds. Make sure you get access to the GCP project that you will use during the workshop.
+* Login to the [Google Cloud console](https://console.cloud.google.com) with the required credentials.
+* [Activate Cloud Shell](https://cloud.google.com/shell/docs/launching-cloud-shell) from the Google Cloud console.
+* Once you've launched your [Cloud Shell Terminal](https://cloud.google.com/shell/docs/use-cloud-shell-terminal), check that all the required components are installed and up-to-date.
+```
+gcloud version
+helm version
+kubectl version --client=true --output=yaml
+skaffold version
+terraform version
+```
 
-First of all, you need to initialize the terraform environment using the following command (please ensure that you're on the `01-infrastructure` folder): `terraform init`
+* Clone this repository using the following command: 
+```
+git clone https://github.com/migueldelucasdoit/gke-observability-workshop.git 
+```
 
-Then, edit the `terraform.tfvars.sample` to specify your `project_id`.
+## Create the required infrastructure
 
-Apply the stack using the following command: `terraform apply --var-file terraform.tfvars.sample`. *(If you're prompted with a dialog box, click on "Authorize".)* Enter `yes`.
+* Position yourself in the lab folder.
+```
+cd ~/gke-observability-workshop/lab-00/iac
+```
+
+* Add all the needed repositories for the Helm charts.
+```
+helm repo add kedacore https://kedacore.github.io/charts
+helm repo add jetstack https://charts.jetstack.io
+helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+helm repo update
+```
+
+* Initialize the Terraform environment using the following command: 
+```
+terraform init
+```
+
+* Then, edit the [terraform.tfvars.sample](./iac/terraform.tfvars.sample) using [Cloud Editor](https://cloud.google.com/shell/docs/launching-cloud-shell-editor) and set the `project_id` to match the GCP project ID you're using. You can check it from Cloud Shell using the following command:
+```
+gcloud config get-value project
+```
+
+* Apply the Terraform stack using the following command. *(If you're prompted with a dialog box, click on "Authorize".)* Enter `yes`. The stack takes about *20 minutes* to be fully deployed.
+```
+terraform apply --var-file terraform.tfvars.sample
+```
 
 ## Cluster Application Check / Playground
-Once the stack is deployed, retrieve the GKE cluster credentials using this command: `gcloud container clusters get-credentials gke-otel-blueprints --region europe-west6`
 
-Ensure that you can access the Kubernetes API Server: `kubectl version`. You should see something like:
+* Once the stack is deployed, retrieve the GKE cluster credentials using this command: 
+```
+gcloud container clusters get-credentials gke-otel-blueprints --region europe-west6
+```
+
+* Ensure that you can access the Kubernetes API Server. You should see something like:
 ```shell
+$ kubectl version
 Client Version: v1.29.0
 Kustomize Version: v5.0.4-0.20230601165947-6ce0bf390ce3
 Server Version: v1.29.0-gke.1381000
 ```
 
-### Provision Kubernetes system objects
-
-Go to the `02-provision` folder to create necessary Kubernetes resources:
-- Patch files with your `PROJECT_ID` using the following command: `sed -i s/PROJECT_ID/XXX/ *.yaml` *(replace `XXX` by your project ID)*
-- `kubectl apply -f 01-base.yaml`: creates the application namespace and required RBAC permissions 
-- `kubectl apply -f 02-workloadidentity.yaml`: creates required IAM objects for Workload Identity
-- `kubectl apply -f 03-collectorconfig.yaml`: creates the OpenTelemetry Collector object required for OpenTelemetry to operate
-- `kubectl apply -f 04-instrumentation.yaml`: creates the Instrumentation object to use OpenTelemetry Auto-instrumentation with golang
-
-### Build & Deploy the application
-
-The application is located in the `app` folder. It consists of the following:
-- an `api` that listen of incoming messages on the `/telemetry` HTTP endpoint, then publish those messages in a Pub/Sub topic
-- a `worker` that pulls messages from the Pub/Sub topic, prints them and ack those messages
-
-We use `skaffold` to easily manage these applications. The first step is to build those two applications.
-
-Go to the `app` folder and path files with your `PROJECT_ID` using the following command:
-*(replace `XXX` by your project ID)*
+* The GKE cluster has been created with two node pools. Ensure that the nodes are ready.
 ```shell
-find . -type f -exec sed -i s/PROJECT_ID_VALUE/XXX/ {} +
+$ kubectl get nodes
+NAME                                                  STATUS   ROLES    AGE   VERSION
+gke-gke-otel-bluepri-system-node-pool-0c13885d-7vx2   Ready    <none>   11m   v1.29.0-gke.1381000
+gke-gke-otel-bluepri-system-node-pool-6d7d3593-cd22   Ready    <none>   11m   v1.29.0-gke.1381000
+gke-gke-otel-bluepri-system-node-pool-706d2e37-2t9g   Ready    <none>   11m   v1.29.0-gke.1381000
+gke-gke-otel-bluepri-worker-node-pool-2b4185e8-nx58   Ready    <none>   11m   v1.29.0-gke.1381000
 ```
 
-To build and deploy the applications, go to the `app` folder, then use the following command (replace `XXX` with your GCP project ID): 
-```shell
-skaffold run --default-repo europe-west6-docker.pkg.dev/XXX/blueprints-repository
-```
+* The GKE cluster has enabled several features that will be needed in the next labs.
+    - Check that [Config Connector](https://cloud.google.com/config-connector/docs/troubleshooting#check-if-running) is running.
+    - Check that [Google Managed Service for Prometheus](https://cloud.google.com/stackdriver/docs/managed-prometheus/troubleshooting#no-errors) is running.
+    - Check that the [Gateway API](https://cloud.google.com/kubernetes-engine/docs/how-to/deploying-gateways#verify-internal) is enabled.
+
 
 ## Links
 
-- https://cloud.google.com/sdk/gcloud/reference/container/clusters/create
-- https://kubernetes.io/docs/reference/kubectl/cheatsheet/
-- https://phoenixnap.com/kb/kubectl-commands-cheat-sheet
-- https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
+- [Basic Terraform commands](https://cloud.google.com/docs/terraform/basic-commands)
+- [Terraform stack documentation](./iac/README.md)
+- [kubectl cheat sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)

@@ -1,51 +1,76 @@
 # GKE Observability Workshop LAB-02
 
-## GKE Logging
+## Kubernetes Liveness and Readiness probes
 
-[![Context](https://img.shields.io/badge/GKE%20Fundamentals-1-blue.svg)](#)
+[![Context](https://img.shields.io/badge/GKE%20Observability%20Workshop-02-blue.svg)](#)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
+## Prerequisites
+
+* [Terraform 0.13+](https://developer.hashicorp.com/terraform/downloads) Tool that manages IaC 
+* [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) Google Cloud Command Line Interface.
+* [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/) The Kubernetes command-line tool, kubectl, allows you to run commands against Kubernetes clusters.
+* [Helm 3.0+](https://helm.sh/docs/) Helm is the package manager for Kubernetes.
+* [Skaffold](https://skaffold.dev/) Skaffold is a command line tool that facilitates continuous development for container based & Kubernetes applications. It's included as an optional component in Google Cloud SDK and you can install it.
+* [K6](https://k6.io/docs/). Grafana k6 is an open-source load testing tool that makes performance testing easy and productive for engineering teams. 
+
+All these tools are available in Google Cloud Cloud Shell which can be [launched](https://cloud.google.com/shell/docs/launching-cloud-shell) from the Google Cloud console.
+
 ## Introduction
-The goal of this lab is to create a logging bucket with analytics enabled.
-This logging bucket will be associated with a log sink to route application logs to this bucket. It will use some labels for filtering relevant application logs while excluding telemetry logs.
-We will also create another log sink to avoid application logs duplication by filtering out application logs from the `_Default` logging bucket.
+Once you have deployed the [*GKE Observability Blueprints application*](./app/) we need to add liveness and readiness probes to the containers of our application. It does have the following components:
 
-## Deployment
-First, you need to create a logging bucket named `blueprints-app-logs` with analytics enabled and a retention of 10 days.
+* [REST API](./app/api). Presents an external REST-based API for telemetry. Validates the input and publish a message on a Pub/Sub topic.
+* [Worker processor](./app/worker) pulls messages from the Pub/Sub topic as they're available. It scales based on the number of acknowledged messages.
 
-Then, you need to create a logging sink named `blueprints-app-logs-sink` that route applications logs to the previously created logging bucket.
-You can filter those logs based on the cluster name, the resource type and labels associated to the application pods. Don't forget to exclude logs coming from the OpenTelemetry Instrumentation pods.
+![Demo App](../assets/demo-app.png)
 
-Finally, create another logging sink named `blueprints-exclude-app-logs-sink` that excludes applications logs from the `_Default` logging bucket.
-You can filter those logs based on the labels associated to the application pods, as well as the OpenTelemetry instrumentation pods.
+## Preparation
 
-## Playground Check
-On the **Log Storage** page, the `blueprints-app-logs` bucket appears with analytics enabled.
+* Assignment of the lab users and playgrounds. Make sure you get access to the GCP project that you will use during the workshop.
+* Login to the [Google Cloud console](https://console.cloud.google.com) with the required credentials.
+* [Activate Cloud Shell](https://cloud.google.com/shell/docs/launching-cloud-shell) from the Google Cloud console.
+* Install [Grafana K6](https://k6.io/docs/get-started/installation/#debian-ubuntu). You will need it later to check that the application has been deployed correctly. *Ignore the warnings that you will receive from Cloud Shell.*
+```
+sudo gpg -k
+sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+sudo apt-get update
+sudo apt-get install k6
+```
+* Once you've launched your [Cloud Shell Terminal](https://cloud.google.com/shell/docs/use-cloud-shell-terminal), check that all the required components are installed and up-to-date.
+```
+gcloud version
+helm version
+kubectl version --client=true --output=yaml
+skaffold version
+terraform version
+k6 version
+```
 
-On the **Log Router** page, you can see 2 filters:
-- `blueprints-app-logs-sink`: Used to route applications' logs to the `blueprints-app-logs` bucket
-- `blueprints-exclude-app-logs-sink`: Used to avoid application logs duplication in the `_Default` bucket
+## Add liveness and readiness probes
 
-On the **Logs Explorer**, using the "Refine scope" button and choosing the `blueprints-app-logs` bucket allows to display only application logs (emitted by the `api` and `worker`).
+* Check the code of the [API component](../lab-01/app/api/handlers.go). Find the liveness and readiness endpoints and annotate them.
 
-On the **Log Analytics** page, you can query application's logs.
+* Add the liveness and readiness probes to the main container of the template Pod spec in the [API deployment](../lab-01/app/api/k8s/deployment.yaml). You can use [Cloud Editor](https://cloud.google.com/shell/docs/launching-cloud-shell-editor) for that purpose.
 
-Here is a query example:
-*(replace `XXX` with your project ID)*
-```sql
-SELECT
-    timestamp, severity, json_payload, JSON_VALUE(json_payload.status), resource
-FROM
-    `XXX.global.blueprints-app-logs._AllLogs`
-WHERE
-    JSON_VALUE(resource.labels.container_name) = "api" AND JSON_VALUE(json_payload.status) IS NOT NULL
-    LIMIT 10000
+## Cluster Application Check / Playground
+
+* Once the application is deployed, check that the application is running.
+```shell
+$ kubectl get pods -n blueprints
+NAME                                 READY   STATUS    RESTARTS   AGE
+blueprints-api-5df98f7c4d-w2frz      1/1     Running   0          103s
+blueprints-worker-5b44df6bff-qww8c   1/1     Running   0          97s
+```
+
+* Run the [K6 test script](./app/loadtest/test.js) and [check that there are no errors](https://k6.io/docs/get-started/results-output/).
+```
+k6 run loadtest/test.js
 ```
 
 ## Links
-
-- https://cloud.google.com/logging/docs/buckets
-- https://cloud.google.com/logging/docs/export/configure_export_v2
-- https://cloud.google.com/logging/docs/export/using_exported_logs
-- https://cloud.google.com/logging/docs/log-analytics
-- https://cloud.google.com/logging/docs/analyze/query-and-view
+- [Skaffold documentation](https://skaffold.dev/docs)
+- [Artifact Registry documentation](https://cloud.google.com/artifact-registry/docs/docker/store-docker-container-images)
+- [Deploying Gateways in GKE](https://cloud.google.com/kubernetes-engine/docs/how-to/deploying-gateways)
+- [Running K6](https://k6.io/docs/get-started/running-k6/)
+- [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)

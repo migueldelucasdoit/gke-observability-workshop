@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blueprints-worker
+  namespace: blueprints
+  labels:
+    app: blueprints-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blueprints-worker
+  template:
+    metadata:
+      labels:
+        app: blueprints-worker
+        app.kubernetes.io/name: blueprints-worker
+        app.kubernetes.io/part-of: blueprints
+        logs: app-sink
+      annotations:
+        instrumentation.opentelemetry.io/inject-go: 'true'
+        instrumentation.opentelemetry.io/otel-go-auto-target-exe: '/worker'
+    spec:
+      initContainers:
+        - image: gcr.io/google.com/cloudsdktool/cloud-sdk:alpine
+          name: workload-identity-initcontainer
+          command:
+            - '/bin/bash'
+            - '-c'
+            - |
+              curl -sS -H 'Metadata-Flavor: Google' 'http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token' --retry 30 --retry-connrefused --retry-max-time 60 --connect-timeout 3 --fail --retry-all-errors > /dev/null && exit 0 || echo 'Retry limit exceeded. Failed to wait for metadata server to be available. Check if the gke-metadata-server Pod in the kube-system namespace is healthy.' >&2; exit 1
+      containers:
+      - name: worker
+        image: blueprints-worker
+        ports:
+          - name: system
+            containerPort: 3000
+        env:
+          - name: PROJECT_ID
+            value: PROJECT_ID_VALUE
+          - name: TOPIC_ID
+            value: blueprints-topic
+          - name: SUBSCRIPTION_ID
+            value: blueprints-subscription
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "200m"
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
+      serviceAccountName: blueprints-worker
+      nodeSelector:
+        layer: blueprints
+      tolerations:
+        - key: "layer"
+          operator: "Equal"
+          value: "blueprints"
+          effect: "NoSchedule"
