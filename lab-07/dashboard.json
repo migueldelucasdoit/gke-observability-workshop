@@ -152,7 +152,7 @@
                 "plotType": "LINE",
                 "targetAxis": "Y1",
                 "timeSeriesQuery": {
-                  "prometheusQuery": "sum by (pod) (worker_received_messages_size)"
+                  "prometheusQuery": "sum by (pod) (worker_received_messages)"
                 }
               }
             ],
@@ -178,7 +178,7 @@
                 "plotType": "LINE",
                 "targetAxis": "Y1",
                 "timeSeriesQuery": {
-                  "prometheusQuery": "sum by (pod) (worker_received_messages_errors)"
+                  "prometheusQuery": "sum by (pod) (worker_received_messages{status=\"error\"})"
                 }
               }
             ],
