@@ -50,6 +50,34 @@ export CLOUDSDK_COMPUTE_REGION=europe-west6
 gcloud container clusters get-credentials gke-otel-blueprints --region $CLOUDSDK_COMPUTE_REGION
 ```
 
+## Destroy Cloud Monitoring resources
+
+* Position yourself in the `lab-07` folder.
+```
+cd ~/gke-observability-workshop/lab-07
+```
+
+* Delete the [SLO alert policy](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/create-policy-api) resource.
+```shell
+$ ACCESS_TOKEN=$(gcloud auth print-access-token)
+$ ALERT_ID=$(curl  --http1.1 --silent --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X GET https://monitoring.googleapis.com/v3/projects/${CLOUDSDK_CORE_PROJECT}/alertPolicies | jq -r '.alertPolicies[0].name')
+$ curl  --http1.1 --silent --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X DELETE https://monitoring.googleapis.com/v3/${ALERT_ID}
+```
+
+* Delete the [Worker service SLO](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/using-api#slo-delete) resource.
+```shell
+$ ACCESS_TOKEN=$(gcloud auth print-access-token)
+$ SERVICE_ID=$(curl --silent --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X GET https://monitoring.googleapis.com/v3/projects/${CLOUDSDK_CORE_PROJECT}/services | jq -r '.services[0].name')
+$ SLO_ID=worker-service-slo
+$ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" -X DELETE https://monitoring.googleapis.com/v3/${SERVICE_ID}/serviceLevelObjectives/${SLO_ID}
+```
+
+* Delete the [Worker service](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/using-api#service-delete) resource.
+```shell
+$ ACCESS_TOKEN=$(gcloud auth print-access-token)
+$ SERVICE_ID=$(curl --silent --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X GET https://monitoring.googleapis.com/v3/projects/${CLOUDSDK_CORE_PROJECT}/services | jq -r '.services[0].name')
+$ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" -X DELETE https://monitoring.googleapis.com/v3/${SERVICE_ID}
+```
 
 ## Destroy OpenTelemetry resources
 

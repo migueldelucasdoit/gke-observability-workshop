@@ -65,7 +65,7 @@ $ find . -type f -exec sed -i s#SERVICE_ID#$SERVICE_ID# {} +
 $ find . -type f -exec sed -i s/SLO_ID/$SLO_ID/ {} +
 ```
 
-* Create the [SLO alert](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/create-policy-api) using the Cloud Monitoring API.
+* Create the [SLO alert policy](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/create-policy-api) using the Cloud Monitoring API.
 
 ```
 curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d @monitoring/slo-alert.json https://monitoring.googleapis.com/v3/projects/${CLOUDSDK_CORE_PROJECT}/alertPolicies
