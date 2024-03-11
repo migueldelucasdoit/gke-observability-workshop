@@ -18,7 +18,8 @@ All these tools are available in Google Cloud Cloud Shell which can be [launched
 
 
 ## Introduction
-* The goal of this lab is create a Cloud Monitoring Dashboard that reflects the metrics 
+* The goal of this lab is creating a Cloud Monitoring [custom dashboard]() that reflects the performance metrics of both [API component](../lab-01/app/api/k8s/deployment.yaml) and [Worker component](../lab-01/app/worker/k8s/deployment.yaml).
+* After you have created the dashboard we would like to create 
 
 ## Preparation
 
@@ -36,11 +37,25 @@ k6 version
 ```
 
 ## Deployment
-TODO
+
+
+* Create the Cloud Monitoring custom dashboard with the following information.
+    * *Ingress bytes count* per GKE Pod for the `blueprints` namespace. You can check [Google Cloud Monitoring networking metrics](https://cloud.google.com/monitoring/api/metrics_gcp#gcp-networking) to find a valid metric to represent.
+    * *Number of published messages by pod* for the [API component](../lab-01/app/api/metrics/main.go).
+    * *Total size of published messages by pod* for the [API component](../lab-01/app/api/metrics/main.go).
+    * *Number of received requests by pod* breakdown by `path` and `code` for the [API component](../lab-01/app/api/metrics/main.go).
+    * *Number of received messages by pod* for the [WORKER component](../lab-01/app/worker/metrics/main.go).
+    * *Number of errors while receiving messages by pod* for the [WORKER component](../lab-01/app/worker/metrics/main.go).
+    * *Total size of received messages by pod* for the [WORKER component](../lab-01/app/worker/metrics/main.go).
 
 ## Playground Check
 TODO
 
 ## Links
-TODO
+
+- [Create and manage custom dashboards](https://cloud.google.com/monitoring/charts/dashboards).
+- [Select metrics for charts on dashboards](https://cloud.google.com/monitoring/charts/selecting-aggregating-metrics).
+- [Google Cloud Monitoring networking metrics](https://cloud.google.com/monitoring/api/metrics_gcp#gcp-networking).
+- [Google Cloud Monitoring GKE system metrics](https://cloud.google.com/monitoring/api/metrics_kubernetes).
+
 

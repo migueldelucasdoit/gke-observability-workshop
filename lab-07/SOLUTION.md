@@ -26,4 +26,9 @@ export CLOUDSDK_COMPUTE_ZONE=europe-west6a
 cd ~/gke-observability-workshop/lab-07
 ```
 
-TODO
+* You can check a [JSON template](./monitoring/dashboard.json) with the dashboard layout here.
+
+* Validate the dashboard using the template.
+```
+gcloud monitoring dashboards create --validate-only --config-from-file ./monitoring/dashboard.json
+```
