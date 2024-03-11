@@ -178,7 +178,7 @@
                 "plotType": "LINE",
                 "targetAxis": "Y1",
                 "timeSeriesQuery": {
-                  "prometheusQuery": "sum by (pod) (worker_received_messages{status=\"error\"})"
+                  "prometheusQuery": "sum by (pod) (worker_received_messages_errors)"
                 }
               }
             ],

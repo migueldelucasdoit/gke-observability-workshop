@@ -6,18 +6,22 @@ import (
 )
 
 var (
-	receivedMessages = promauto.NewCounterVec(prometheus.CounterOpts{
+	receivedMessages = promauto.NewCounter(prometheus.CounterOpts{
 		Name: "worker_received_messages",
-		Help: "The total number of received messages with status.",
-	}, []string{"status"})
+		Help: "The total number of received messages",
+	})
 	receivedMessagesSize = promauto.NewCounter(prometheus.CounterOpts{
 		Name: "worker_received_messages_size",
 		Help: "The total payload size of received messages",
 	})
+	receivedMessagesErrors = promauto.NewCounter(prometheus.CounterOpts{
+		Name: "worker_received_messages_errors",
+		Help: "The total number of errors while receiving messages",
+	})
 )
 
 func IncReceived() {
-	receivedMessages.WithLabelValues("ok").Inc()
+	receivedMessages.Inc()
 }
 
 func AddReceivedSize(size float64) {
@@ -25,5 +29,5 @@ func AddReceivedSize(size float64) {
 }
 
 func IncReceivedMessagesErrors() {
-	receivedMessages.WithLabelValues("error").Inc()
+	receivedMessagesErrors.Inc()
 }

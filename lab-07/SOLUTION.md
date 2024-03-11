@@ -40,9 +40,18 @@ gcloud monitoring dashboards create --config-from-file ./monitoring/dashboard.js
 find . -type f -exec sed -i s/PROJECT_ID_VALUE/$CLOUDSDK_CORE_PROJECT/ {} +
 ```
 
-* Create the [worker service](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/using-api#service-create) using the Google Cloud API.
+* Create the [Worker service](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/using-api#service-create) using the Google Cloud API.
 ```
-ACCESS_TOKEN=$(gcloud auth print-access-token)
-SERVICE_ID=worker-service
-curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d @monitoring/service-definition.json https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services?service_id=${SERVICE_ID}
+$ ACCESS_TOKEN=$(gcloud auth print-access-token)
+$ SERVICE_ID=worker-service
+$ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d @monitoring/service-definition.json https://monitoring.googleapis.com/v3/projects/${CLOUDSDK_CORE_PROJECT}/services?service_id=${SERVICE_ID}
+```
+
+* Create the [Worker service SLO](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/using-api#slo-create) using the Google Cloud API.
+
+```
+$ ACCESS_TOKEN=$(gcloud auth print-access-token)
+$ SERVICE_ID=blueprints-worker
+$ SLO_ID=worker-service-slo
+$ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d @monitoring/slo-definition.json "https://monitoring.googleapis.com/v3/projects/${CLOUDSDK_CORE_PROJECT}/services/${SERVICE_ID}/serviceLevelObjectives?service_level_objective_id=${SLO_ID}"
 ```
