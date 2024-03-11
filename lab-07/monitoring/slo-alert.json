@@ -14,7 +14,7 @@
                 "aggregations": [],
                 "comparison": "COMPARISON_GT",
                 "duration": "0s",
-                "filter": "select_slo_burn_rate(\"projects/PROJECT_ID_VALUE/services/SERVICE_ID/serviceLevelObjectives/SLO_ID\", \"60m\")",
+                "filter": "select_slo_burn_rate(\"SERVICE_ID/serviceLevelObjectives/SLO_ID\", \"60m\")",
                 "thresholdValue": 13.44,
                 "trigger": {
                     "count": 1
