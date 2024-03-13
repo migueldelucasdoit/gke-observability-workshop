@@ -43,6 +43,9 @@ module "gke" {
   http_load_balancing             = true
   gce_pd_csi_driver               = true
 
+  create_service_account = var.gke_cluster_enable_creating_service_account
+  service_account        = var.gke_cluster_enable_creating_service_account ? "" : google_service_account.cluster_service_account[0].email
+
 
   filestore_csi_driver    = false
   istio                   = false

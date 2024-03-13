@@ -144,6 +144,12 @@ variable "gke_enable_identity_service" {
   default     = false
 }
 
+variable "gke_cluster_enable_creating_service_account" {
+  type        = bool
+  description = "Defines if service account specified to run nodes should be created."
+  default     = true
+}
+
 variable "gke_cluster_remove_default_node_pool" {
   type        = bool
   description = "Remove default node pool while setting up the cluster."

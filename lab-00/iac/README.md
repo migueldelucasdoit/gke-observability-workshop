@@ -80,6 +80,7 @@ terraform import google_logging_project_bucket_config.app-logs-bucket projects/P
 | <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | 4.84.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.11.0 |
 | <a name="provider_kubectl"></a> [kubectl](#provider\_kubectl) | 1.14.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.5.1 |
 
 ## Modules
 
@@ -101,15 +102,22 @@ terraform import google_logging_project_bucket_config.app-logs-bucket projects/P
 | [google_compute_router.vpc_router](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_router) | resource |
 | [google_compute_router_nat.vpc_router_nat](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_router_nat) | resource |
 | [google_compute_subnetwork.subnet_iap](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_subnetwork) | resource |
+| [google_project_iam_member.cluster_service_account-artifact-registry](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
+| [google_project_iam_member.cluster_service_account-gcr](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
+| [google_project_iam_member.cluster_service_account-nodeService_account](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
 | [google_project_iam_member.config_connector_sa](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
 | [google_pubsub_subscription.blueprints_subscription](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/pubsub_subscription) | resource |
 | [google_pubsub_topic.blueprints_topic](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/pubsub_topic) | resource |
+| [google_service_account.cluster_service_account](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
 | [google_service_account.config_connector_sa](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
+| [google_service_account_iam_member.cluster_service_account](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account_iam_member) | resource |
 | [google_service_account_iam_member.config_connector_sa](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account_iam_member) | resource |
 | [helm_release.cert_manager](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.otel_operator](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [kubectl_manifest.config_connector_cluster_config](https://registry.terraform.io/providers/gavinbunney/kubectl/latest/docs/resources/manifest) | resource |
+| [random_string.cluster_service_account_suffix](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [google_client_config.default](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/client_config) | data source |
+| [google_client_openid_userinfo.me](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/client_openid_userinfo) | data source |
 | [google_compute_zones.available](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_zones) | data source |
 
 ## Inputs
@@ -123,6 +131,7 @@ terraform import google_logging_project_bucket_config.app-logs-bucket projects/P
 | <a name="input_config_connector_iam_roles"></a> [config\_connector\_iam\_roles](#input\_config\_connector\_iam\_roles) | Config Connector IAM roles added to the operator service account | `set(string)` | <pre>[<br>  "roles/editor"<br>]</pre> | no |
 | <a name="input_gke_cluster_default_max_pods_per_node"></a> [gke\_cluster\_default\_max\_pods\_per\_node](#input\_gke\_cluster\_default\_max\_pods\_per\_node) | The maximum number of pods to schedule per node. | `number` | `110` | no |
 | <a name="input_gke_cluster_enable_config_connector"></a> [gke\_cluster\_enable\_config\_connector](#input\_gke\_cluster\_enable\_config\_connector) | Whether ConfigConnector is enabled for this cluster. | `bool` | `false` | no |
+| <a name="input_gke_cluster_enable_creating_service_account"></a> [gke\_cluster\_enable\_creating\_service\_account](#input\_gke\_cluster\_enable\_creating\_service\_account) | Defines if service account specified to run nodes should be created. | `bool` | `true` | no |
 | <a name="input_gke_cluster_enable_gateway_api"></a> [gke\_cluster\_enable\_gateway\_api](#input\_gke\_cluster\_enable\_gateway\_api) | Enable Gateway API. | `bool` | `false` | no |
 | <a name="input_gke_cluster_enable_horizontal_pod_autoscaling"></a> [gke\_cluster\_enable\_horizontal\_pod\_autoscaling](#input\_gke\_cluster\_enable\_horizontal\_pod\_autoscaling) | Enable horizontal pod autoscaling addon. | `bool` | `true` | no |
 | <a name="input_gke_cluster_enable_intranode_visibility"></a> [gke\_cluster\_enable\_intranode\_visibility](#input\_gke\_cluster\_enable\_intranode\_visibility) | Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network. | `bool` | `false` | no |
