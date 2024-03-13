@@ -61,7 +61,8 @@ gke_enable_managed_prometheus                 = true
 gke_cluster_node_pools = [
   {
     name                      = "system-node-pool"
-    machine_type              = "n2-standard-4"
+    machine_type              = "n2d-standard-4"
+    node_locations            = "europe-west6-b"
     autoscaling               = true
     min_count                 = 1
     max_count                 = 3
@@ -80,8 +81,8 @@ gke_cluster_node_pools = [
   },
   {
     name                      = "worker-node-pool"
-    machine_type              = "n2-standard-2"
-    node_locations            = "europe-west6-a"
+    machine_type              = "n2d-standard-2"
+    node_locations            = "europe-west6-b"
     autoscaling               = true
     min_count                 = 1
     max_count                 = 3
