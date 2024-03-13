@@ -129,4 +129,4 @@ config_connector_iam_roles = [
   "roles/owner",
 ] 
 
-email_user = ""
+user_email = ""
