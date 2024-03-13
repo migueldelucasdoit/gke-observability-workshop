@@ -61,7 +61,7 @@ gke_enable_managed_prometheus                 = true
 gke_cluster_node_pools = [
   {
     name                      = "system-node-pool"
-    machine_type              = "n2d-standard-4"
+    machine_type              = "n2-standard-4"
     node_locations            = "europe-west6-b"
     autoscaling               = true
     min_count                 = 1
