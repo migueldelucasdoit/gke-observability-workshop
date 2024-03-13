@@ -8,6 +8,7 @@ data "google_client_openid_userinfo" "me" {
 
 locals {
   service_account_default_name = "tf-gke-${substr(var.gke_cluster_name, 0, min(15, length(var.gke_cluster_name)))}-${random_string.cluster_service_account_suffix.result}"
+  user_email                   = data.google_client_openid_userinfo.me.email != "" ? data.google_client_openid_userinfo.me.email : var.user_email
 }
 
 resource "random_string" "cluster_service_account_suffix" {
@@ -50,5 +51,5 @@ resource "google_service_account_iam_member" "cluster_service_account" {
   count              = var.gke_cluster_enable_creating_service_account ? 0 : 1
   service_account_id = google_service_account.cluster_service_account[0].name
   role               = "roles/iam.serviceAccountUser"
-  member             = "user:${data.google_client_openid_userinfo.me.email}"
+  member             = "user:${local.user_email}"
 }

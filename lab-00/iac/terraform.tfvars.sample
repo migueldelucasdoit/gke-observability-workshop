@@ -127,3 +127,5 @@ otel_operator_settings = {
 config_connector_iam_roles = [
   "roles/owner",
 ] 
+
+email_user = ""

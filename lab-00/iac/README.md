@@ -162,6 +162,7 @@ terraform import google_logging_project_bucket_config.app-logs-bucket projects/P
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | GCP project ID | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | GCP compute region ID | `string` | n/a | yes |
 | <a name="input_stack_name"></a> [stack\_name](#input\_stack\_name) | Name of the stack | `string` | n/a | yes |
+| <a name="input_user_email"></a> [user\_email](#input\_user\_email) | External email user to be added as user of the GKE cluster SA. | `string` | `""` | no |
 | <a name="input_vpc_auto_create_subnetworks"></a> [vpc\_auto\_create\_subnetworks](#input\_vpc\_auto\_create\_subnetworks) | When set to true, the network is created in 'auto subnet mode' and it will create a subnet for each region automatically across the 10.128.0.0/9 address range.<br>When set to false, the network is created in 'custom subnet mode' so the user can explicitly connect subnetwork resources. | `bool` | `false` | no |
 | <a name="input_vpc_delete_default_igw_routes"></a> [vpc\_delete\_default\_igw\_routes](#input\_vpc\_delete\_default\_igw\_routes) | If set, ensure that all routes within the network specified whose names begin with 'default-route' and with a next hop of 'default-internet-gateway' are deleted. | `bool` | `false` | no |
 | <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | VPC name | `string` | `"test-vpc"` | no |

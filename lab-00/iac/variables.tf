@@ -360,3 +360,13 @@ variable "config_connector_iam_roles" {
     "roles/editor"
   ]
 }
+
+#############################################################################
+# External email user to be added as user of the GKE cluster SA             #
+#############################################################################
+
+variable "user_email" {
+  description = "External email user to be added as user of the GKE cluster SA."
+  type        = string
+  default     = ""
+}
