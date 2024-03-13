@@ -32,14 +32,14 @@ resource "google_project_iam_member" "cluster_service_account-nodeService_accoun
 }
 
 resource "google_project_iam_member" "cluster_service_account-gcr" {
-  for_each = var.gke_cluster_enable_creating_service_account ? [] : local.gke_cluster_registry_project_ids
+  for_each = toset(var.gke_cluster_enable_creating_service_account ? [] : local.gke_cluster_registry_project_ids)
   project  = each.key
   role     = "roles/storage.objectViewer"
   member   = "serviceAccount:${google_service_account.cluster_service_account[0].email}"
 }
 
 resource "google_project_iam_member" "cluster_service_account-artifact-registry" {
-  for_each = var.gke_cluster_enable_creating_service_account ? [] : local.gke_cluster_registry_project_ids
+  for_each = toset(var.gke_cluster_enable_creating_service_account ? [] : local.gke_cluster_registry_project_ids)
   project  = each.key
   role     = "roles/artifactregistry.reader"
   member   = "serviceAccount:${google_service_account.cluster_service_account[0].email}"
