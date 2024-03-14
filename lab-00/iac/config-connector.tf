@@ -17,11 +17,16 @@ resource "google_project_iam_member" "config_connector_sa" {
   member   = google_service_account.config_connector_sa[0].member
 }
 
+# Workload Identity pool is created automatically after the first GKE cluster is created with 
+# this enalbed. We need make sure the IAM perm is applied after the gke cluster.
 resource "google_service_account_iam_member" "config_connector_sa" {
   count              = var.gke_cluster_enable_config_connector ? 1 : 0
   service_account_id = google_service_account.config_connector_sa[0].name
   role               = "roles/iam.workloadIdentityUser"
   member             = local.config_connector_gcp_derived_name
+  depends_on = [
+    module.gke
+  ]
 }
 
 #############################################################################
