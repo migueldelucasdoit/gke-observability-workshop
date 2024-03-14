@@ -79,6 +79,12 @@ $ SERVICE_ID=$(curl --silent --http1.1 --header "Authorization: Bearer ${ACCESS_
 $ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" -X DELETE https://monitoring.googleapis.com/v3/${SERVICE_ID}
 ```
 
+* Delete the Cloud Monitoring Dashboard
+```shell
+$ DASHBOARD_ID=$(gcloud monitoring dashboards list --format="value(name)")
+$ gcloud monitoring dashboards delete --quiet $DASHBOARD_ID
+```
+
 ## Destroy OpenTelemetry resources
 
 * Position yourself in the `lab-05` folder.
