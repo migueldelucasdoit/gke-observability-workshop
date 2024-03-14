@@ -68,9 +68,10 @@ gcloud config get-value project
 
 * Edit the [terraform.tfvars.sample](./iac/terraform.tfvars.sample) using [Cloud Editor](https://cloud.google.com/shell/docs/launching-cloud-shell-editor) and set the `user_email` to match the email address you used to authenticate to GCP.
 
-* Apply the Terraform stack using the following command. *(If you're prompted with a dialog box, click on "Authorize".)* Enter `yes`. The stack takes about *20 minutes* to be fully deployed.
-```
-terraform apply --var-file terraform.tfvars.sample
+* Apply the Terraform stack using the following command. *(If you're prompted with a dialog box, click on "Authorize".)* Enter `yes`. The stack is deployed in two stages and takes about *20 minutes* to be fully deployed.
+```shell
+$ terraform apply --var-file terraform.tfvars.sample --target=module.vpc --target=module.subnets
+$ terraform apply --var-file terraform.tfvars.sample
 ```
 
 ## Cluster Application Check / Playground
