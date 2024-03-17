@@ -20,7 +20,7 @@ All these tools are available in Google Cloud Cloud Shell which can be [launched
 Once you have deployed the [*GKE Observability Blueprints application*](./app/) we need to add liveness and readiness probes to the containers of our application. It does have the following components:
 
 * [REST API](./app/api). Presents an external REST-based API for telemetry. Validates the input and publish a message on a Pub/Sub topic.
-* [Worker processor](./app/worker) pulls messages from the Pub/Sub topic as they're available. It scales based on the number of acknowledged messages.
+* [Worker processor](../lab-01/app/worker) pulls messages from the Pub/Sub topic as they're available. It scales based on the number of acknowledged messages.
 
 ![Demo App](../assets/demo-app.png)
 
@@ -65,6 +65,7 @@ blueprints-worker-5b44df6bff-qww8c   1/1     Running   0          97s
 
 * Run the [K6 test script](./app/loadtest/test.js) and [check that there are no errors](https://k6.io/docs/get-started/results-output/).
 ```
+cd ../lab-01/app/loadtest
 k6 run loadtest/test.js
 ```
 
