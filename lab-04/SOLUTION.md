@@ -50,6 +50,16 @@ cd ~/gke-observability-workshop/lab-01/app
 cp ../../lab-04/app/skaffold-04.yaml ./
 ```
 
+* Copy the PodMonitoring resource file [`podmonitoring.yaml`](./app/api/k8s/podmonitoring.yaml) for the API component to the [`lab-01/app`](../lab-01/app/) folder.
+```
+cp ../../lab-04/app/api/k8s/podmonitoring.yaml ./app/api/k8s/
+```
+
+* Copy the PodMonitoring resource file [`podmonitoring.yaml`](./app/worker/k8s/podmonitoring.yaml) for the WORKER component to the [`lab-01/app`](../lab-01/app/) folder.
+```
+cp ../../lab-04/app/worker/k8s/podmonitoring.yaml ./app/worker/k8s/
+```
+
 * Replace `PROJECT_ID_VALUE` in the application deployment specs using the following command.
 ```
 find . -type f -exec sed -i s/PROJECT_ID_VALUE/$CLOUDSDK_CORE_PROJECT/ {} +
