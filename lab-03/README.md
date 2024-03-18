@@ -44,7 +44,7 @@ terraform version
 * Create a logging bucket named `blueprints-app-logs` with analytics *enabled* and a retention of *10 days*.
 * Create a logging sink named `blueprints-app-logs-sink` that route applications logs to the previously created logging bucket.
 * Filter the logs based on the *cluster name*, the *resource type* and the *labels* associated to the application pods. 
-* Create another logging sink named `blueprints-exclude-app-logs-sink` that exclude applications logs from the `_Default` logging bucket. You can filter those logs based on the *labels* associated to the application pods.
+* Add the exclusion filter to the logging sink named `_Default` to filter out logs coming from the apps. Filter the logs based on the *resource type* and the *labels*.
 
 ## Playground Check
 * On the **Log Storage** page, the `blueprints-app-logs` bucket appears with analytics enabled.

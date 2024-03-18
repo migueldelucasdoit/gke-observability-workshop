@@ -36,5 +36,5 @@ gcloud logging sinks update blueprints-app-logs-sink --add-exclusion="name=opent
 * Update the logging sink that avoid logs duplication and add the exclusion. This sink avoid application logs duplication in the `_Default` bucket.
 
 ```shell
-gcloud logging sinks update blueprints-exclude-app-logs-sink --add-exclusion="name=opentelemetry-auto-instrumentation,filter=resource.labels.container_name=\"opentelemetry-auto-instrumentation\""
+gcloud logging sinks update _Default --add-exclusion="name=opentelemetry-auto-instrumentation,filter=resource.labels.container_name=\"opentelemetry-auto-instrumentation\""
 ```
