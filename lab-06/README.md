@@ -39,13 +39,12 @@ terraform version
 ## Deployment
 
 * Add the exclusion filter to the logging sink named `blueprints-app-logs-sink` to filter out logs coming from the container name `opentelemetry-auto-instrumentation`. Filter the logs based on the *resource type* and the *labels* associated to this *container_name*. 
-* Add the exclusion filter to the logging sink named `blueprints-exclude-app-logs-sink` that exclude applications logs from the `_Default` logging bucket. You can filter those logs based on the *labels* associated to this *container_name*. 
+* Add the exclusion filter to the logging sink named `_Default_` that exclude applications logs from the `_Default` logging bucket. You can filter those logs based on the *labels* associated to this *container_name*. 
 
 ## Playground Check
 * On the **Log Storage** page, the `blueprints-app-logs` bucket appears with analytics enabled.
-* On the **Log Router** page, you can see 2 filters:
+* On the **Log Router** page, you can see 1 filters:
     - `blueprints-app-logs-sink`: Used to route applications' logs to the `blueprints-app-logs` bucket
-    - `blueprints-exclude-app-logs-sink`: Used to avoid application logs duplication in the `_Default` bucket
 * On the **Logs Explorer**, using the "Refine scope" button and choosing the `blueprints-app-logs` bucket allows to display only application logs (emitted by the `api` and `worker`). Check that you're not receiving logs from the `opentelemetry-auto-instrumentation` containers.
 
 ## Links

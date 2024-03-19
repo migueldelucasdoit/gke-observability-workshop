@@ -74,11 +74,11 @@ gcloud logging buckets create blueprints-app-logs --location=global --enable-ana
 * Create the logging sink to route application logs.
 
 ```shell
-gcloud logging sinks create blueprints-app-logs-sink logging.googleapis.com/projects/$CLOUDSDK_CORE_PROJECT/locations/global/buckets/blueprints-app-logs --log-filter "resource.labels.cluster_name=\"gke-otel-blueprints\" AND resource.type=\"k8s_container\" AND labels.\"k8s-pod/logs\"=\"app-sink\""
+gcloud logging sinks create blueprints-app-logs-sink logging.googleapis.com/projects/$CLOUDSDK_CORE_PROJECT/locations/global/buckets/blueprints-app-logs --log-filter "resource.labels.cluster_name=\"gke-otel-blueprints\" AND resource.type=\"k8s_container\" AND labels.\"k8s-pod/app_kubernetes_io/part-of\"=\"blueprints\""
 ```
 
 * Create the logging sink that avoid logs duplication. This sink avoid application logs duplication in the `_Default` bucket.
 
 ```shell
-gcloud logging sinks create blueprints-exclude-app-logs-sink logging.googleapis.com/projects/$CLOUDSDK_CORE_PROJECT/locations/global/buckets/_Default --exclusion="name=application-pods-logs,filter=labels.\"k8s-pod/logs\"=\"app-sink\""
+gcloud logging sinks update _default logging.googleapis.com/projects/$CLOUDSDK_CORE_PROJECT/locations/global/buckets/_Default --exclusion="name=application-pods-logs,filter=labels.\"k8s-pod/app_kubernetes_io/part-of\"=\"blueprints\""
 ```
