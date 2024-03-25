@@ -19,11 +19,6 @@ export CLOUDSDK_CORE_PROJECT=$(gcloud config get-value project)
 export CLOUDSDK_COMPUTE_REGION=europe-west6
 ```
 
-* Set the [default compute zone](https://cloud.google.com/compute/docs/gcloud-compute#set-default-region-zone-environment-variables) environment variable to `europe-west6-a`.
-```
-export CLOUDSDK_COMPUTE_ZONE=europe-west6a
-```
-
 * Obtain the name of the [Artifact Registry container image repository](https://cloud.google.com/sdk/gcloud/reference/artifacts/repositories/list) that has been provisioned in the environment. This repository will be used to store the container images of the application.
 
 ```

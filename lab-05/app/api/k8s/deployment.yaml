@@ -16,7 +16,6 @@ spec:
         app: blueprints-api
         app.kubernetes.io/name: blueprints-api
         app.kubernetes.io/part-of: blueprints
-        logs: app-sink
       annotations:
         instrumentation.opentelemetry.io/inject-go: 'true'
         instrumentation.opentelemetry.io/otel-go-auto-target-exe: '/api'

@@ -19,7 +19,7 @@ All these tools are available in Google Cloud Cloud Shell which can be [launched
 
 ## Introduction
 * The goal of this lab is creating a Cloud Monitoring [custom dashboard]() that reflects the performance metrics of both [API component](../lab-01/app/api/k8s/deployment.yaml) and [Worker component](../lab-01/app/worker/k8s/deployment.yaml).
-* After you have created the dashboard we would like to create 
+* After you have created the dashboard we would like to create an [*SLO* based on an *SLI*](https://sre.google/sre-book/service-level-objectives/) for the [Worker component](../lab-01/app/worker/k8s/deployment.yaml) on the number of processed messages.
 
 ## Preparation
 

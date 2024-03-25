@@ -95,8 +95,6 @@ $ kubectl get nodes
 NAME                                                  STATUS   ROLES    AGE   VERSION
 gke-gke-otel-bluepri-system-node-pool-0c13885d-7vx2   Ready    <none>   11m   v1.29.0-gke.1381000
 gke-gke-otel-bluepri-system-node-pool-6d7d3593-cd22   Ready    <none>   11m   v1.29.0-gke.1381000
-gke-gke-otel-bluepri-system-node-pool-706d2e37-2t9g   Ready    <none>   11m   v1.29.0-gke.1381000
-gke-gke-otel-bluepri-worker-node-pool-2b4185e8-nx58   Ready    <none>   11m   v1.29.0-gke.1381000
 ```
 
 * The GKE cluster has enabled several features that will be needed in the next labs.

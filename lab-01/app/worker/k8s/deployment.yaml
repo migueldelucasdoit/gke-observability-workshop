@@ -15,7 +15,6 @@ spec:
       labels:
         app: blueprints-worker
         app.kubernetes.io/name: blueprints-worker
-        app.kubernetes.io/part-of: blueprints
     spec:
       initContainers:
         - image: gcr.io/google.com/cloudsdktool/cloud-sdk:alpine

@@ -39,7 +39,7 @@ terraform version
 
 ## Deployment
 
-* Add the label `logs: app-sink` to the Pod template of both [API component](../lab-01/app/api/k8s/deployment.yaml) and [Worker component](../lab-01/app/worker/k8s/deployment.yaml) Deployments to identify the logs emmited from your application. You can use [Cloud Editor](https://cloud.google.com/shell/docs/launching-cloud-shell-editor) for that purpose.
+* Add the label `app.kubernetes.io/part-of: blueprints` to the Pod template of both [API component](../lab-01/app/api/k8s/deployment.yaml) and [Worker component](../lab-01/app/worker/k8s/deployment.yaml) Deployments to identify the logs emmited from your application. You can use [Cloud Editor](https://cloud.google.com/shell/docs/launching-cloud-shell-editor) for that purpose.
 * Deploy the application changes using [Skaffold](https://skaffold.dev/) as in previous labs. Make sure you deploy only [API component](../lab-01/app/api/k8s/deployment.yaml) and [Worker component](../lab-01/app/worker/k8s/deployment.yaml).
 * Create a logging bucket named `blueprints-app-logs` with analytics *enabled* and a retention of *10 days*.
 * Create a logging sink named `blueprints-app-logs-sink` that route applications logs to the previously created logging bucket.
