@@ -1,0 +1,50 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: blueprints-api-sa
+  namespace: blueprints
+  annotations:
+      cnrm.cloud.google.com/project-id: PROJECT_ID_VALUE
+spec:
+  displayName: Service account for Blueprints API.
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: blueprints-api-policy-member-binding
+  namespace: blueprints
+spec:
+  member: serviceAccount:blueprints-api-sa@PROJECT_ID_VALUE.iam.gserviceaccount.com
+  role: roles/pubsub.publisher
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: projects/PROJECT_ID_VALUE
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: blueprints-api-policy-member-binding-2
+  namespace: blueprints
+spec:
+  member: serviceAccount:blueprints-api-sa@PROJECT_ID_VALUE.iam.gserviceaccount.com
+  role: roles/pubsub.viewer
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: projects/PROJECT_ID_VALUE
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: blueprints-api-iampolicy-workload-identity
+  namespace: blueprints
+spec:
+  resourceRef:
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMServiceAccount
+    name: blueprints-api-sa
+  bindings:
+    - role: roles/iam.workloadIdentityUser
+      members:
+        - serviceAccount:PROJECT_ID_VALUE.svc.id.goog[blueprints/blueprints-api]

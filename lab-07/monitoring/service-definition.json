@@ -1,0 +1,11 @@
+{
+    "displayName": "blueprints-worker",
+    "gkeWorkload": {
+        "projectId": "PROJECT_ID_VALUE",
+        "location": "europe-west6",
+        "clusterName": "gke-otel-blueprints",
+        "namespaceName": "blueprints",
+        "topLevelControllerType": "Deployment",
+        "topLevelControllerName": "blueprints-worker"
+    }
+}

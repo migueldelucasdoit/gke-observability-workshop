@@ -1,0 +1,13 @@
+{
+    "serviceLevelIndicator": {
+        "requestBased": {
+            "goodTotalRatio": {
+                "totalServiceFilter": "metric.type=\"prometheus.googleapis.com/worker_received_messages/counter\" resource.type=\"prometheus_target\"",
+                "badServiceFilter": "metric.type=\"prometheus.googleapis.com/worker_received_messages_errors/counter\" resource.type=\"prometheus_target\""
+            }
+        }
+    },
+    "goal": 0.95,
+    "rollingPeriod": "2419200s",
+    "displayName": "95% Availability, rolling 28 days"
+}

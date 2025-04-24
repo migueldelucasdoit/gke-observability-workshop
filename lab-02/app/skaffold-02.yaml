@@ -1,0 +1,16 @@
+apiVersion: skaffold/v4beta6
+kind: Config
+metadata:
+  name: blueprints
+build:
+  artifacts:
+    - image: blueprints-api
+      context: api
+      docker:
+        dockerfile: Dockerfile
+deploy:
+  kubectl: {}
+manifests:
+  rawYaml:
+    - api/k8s/deployment.yaml
+

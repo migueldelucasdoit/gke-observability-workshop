@@ -1,0 +1,34 @@
+---
+kind: Gateway
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: blueprints-api
+  namespace: blueprints
+spec:
+  gatewayClassName: gke-l7-global-external-managed
+  addresses:
+  - type: NamedAddress
+    value: gateway-external-address
+  listeners:
+  - name: http
+    protocol: HTTP
+    port: 80
+---
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: blueprints-api
+  namespace: blueprints
+  labels:
+    gateway: blueprints-api
+spec:
+  parentRefs:
+  - name: blueprints-api
+  rules:
+  - backendRefs:
+    - name: blueprints-api
+      port: 8080
+    matches:
+     - path:
+        type: PathPrefix
+        value: /

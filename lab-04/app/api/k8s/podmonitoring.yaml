@@ -1,0 +1,12 @@
+apiVersion: monitoring.googleapis.com/v1
+kind: PodMonitoring
+metadata:
+  name: blueprints-api
+  namespace: blueprints
+spec:
+  selector:
+    matchLabels:
+      app: blueprints-api
+  endpoints:
+    - port: system
+      interval: 5s
